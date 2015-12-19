@@ -3,19 +3,26 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	<script src="dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
 	<title>ArGO</title>
 	<style>
+		* {
+			font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			color: 575757;
+		}
 		#map {
 			width: 100%;
 			height: 100%;
 		}
 		#overlay{
+			overflow: auto;
 			right: 0;
 			display: none;
 			top: 0;
 			height: 100%;
 			z-index: 2;
-			width: 300px;
+			width: 20%;
 			background: #fff;
 			opacity: 0.9;
 			position: fixed;
@@ -38,7 +45,40 @@
 			display: block;
 			margin-left: auto;
 			margin-right: auto;
-		}		
+		}
+		#quest-ol{
+			border-radius: 5px;
+			display: none;
+			left: 50%;
+			top: 50%;
+			margin-top:-174px;
+			margin-left:-256px;
+			overflow: auto;
+			width: 478px;
+			z-index: 2;
+			background: #fff;
+			position: fixed;
+		}
+		#quest-head{
+			font-size: 30px;
+			text-align: center;
+			position: relative;
+			padding: 0;
+			display: block;
+		}
+		#quest-text {
+			text-align: center;
+			color: #575757;
+		}
+		#quest-answers input {
+			margin: 5px;
+			margin-left: 15px;
+			vertical-align: middle;
+		}
+		#quest-answers button {
+			margin: 20px;
+			float: right;
+		}
 	</style>
 </head>
 <body>
@@ -49,6 +89,8 @@
 		<p id="overlay-content"></p>
 	</div>
 	<script src="geojson.js"></script>
-	<script src="aufgabe.js"></script>
+	<script src="map_init.js"></script>
+	<script src="quests.js"></script>
+	<script src="functions.js"></script>
 </body>
 </html>
