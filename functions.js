@@ -68,4 +68,5 @@ function check(){
 function closeQuestion(){
 	var element = document.getElementById("quest-ol");
 	element.parentNode.removeChild(element);
+//	score += failCount * 10;
 }
