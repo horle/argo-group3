@@ -1,0 +1,54 @@
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	<title>ArGO</title>
+	<style>
+		#map {
+			width: 100%;
+			height: 100%;
+		}
+		#overlay{
+			right: 0;
+			display: none;
+			top: 0;
+			height: 100%;
+			z-index: 2;
+			width: 300px;
+			background: #fff;
+			opacity: 0.9;
+			position: fixed;
+		}
+		#overlay h1 {
+			padding-top: 5px;
+			font-family: sans-serif;
+			opacity: 1;
+			font-size: 20px;
+			text-align: center;
+		}
+		#overlay-content{
+			padding: 10px;
+			font-size: 16px;
+			font-family: serif;
+		}
+		#overlay img {
+			max-width: 280px;
+			max-height: 250px;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}		
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+	<div id="overlay">
+		<h1 id="overlay-h1"></h1>
+		<img id="overlay-img"></img>
+		<p id="overlay-content"></p>
+	</div>
+	<script src="geojson.js"></script>
+	<script src="aufgabe.js"></script>
+</body>
+</html>
