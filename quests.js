@@ -14,8 +14,7 @@ var questions = {
 					"text": "Octavian",
 					"correct": false
 				}
-			],
-			"correct": 1
+			]
 		}
 	]
 };

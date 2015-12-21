@@ -4,69 +4,59 @@ function popQuestion(id) {
 	
 	//get question by id
 	var q = questions.questions[id];
-	
-	//create divs for quest overlay
-	var quest = document.createElement("div");
-	quest.setAttribute("id",'quest-ol');
-	var header = document.createElement("h2");
-	header.setAttribute("id", 'quest-head');
-	var text = document.createElement("p");
-	text.setAttribute("id", 'quest-text');
-	var answers = document.createElement("form");
-	answers.setAttribute("id", "quest-answers");
-
-	document.body.appendChild(quest);
-	quest.appendChild(header);
-	quest.appendChild(text);
-	quest.appendChild(answers);
-	
-	//fill divs with content
-	quest.style.display = "block";
-	header.innerHTML = q.title;
-	text.innerHTML = q.text;
 
 	//counter for wrong answers. one less than number of possibilities
 	failCount = q.answers.length - 1;
 	
+	var rad = "";
 	//create radio buttons for answers	
 	for (var i = 0; i < q.answers.length; i++) {
 		
-		var input = document.createElement("input");
-		input.setAttribute("type", "radio");
-		input.setAttribute("name", "radios");
-		input.setAttribute("value", q.answers[i].correct);
-		answers.appendChild(input);
-		answers.appendChild(document.createTextNode(q.answers[i].text));
-		answers.appendChild(document.createElement("br"));
-	
-		if (i == q.answers.length -1) {
-			var check = document.createElement("button");
-			check.setAttribute("type", "button");
-			check.innerHTML = "Prüfen!";
-			check.setAttribute("onClick", "check()");
-			answers.appendChild(check);
-		}
+		rad += "<div class=\"answer\"><input class=\"visibleInput\" type=\"radio\" name=\"question\" value="
+			+ q.answers[i].correct + "><span>" + q.answers[i].text + "</span></div><br>";
 	}
+	
+	var that = this;
+	swal({
+		title: q.title,
+		text: q.text + "<br>"+rad,
+		html: true,
+		closeOnConfirm: false
+	}, function() {
+			ret = that.check();
+			if (ret === false){
+				if (failCount === 1)
+					swal.showInputError("Leider falsch! Noch 1 Versuch übrig.");
+				else
+					swal.showInputError("Leider falsch! Noch "+failCount+" Versuche übrig.");
+					
+				return false;
+			} else
+			if (ret === null)
+				swal.showInputError("Bitte eine Antwort auswählen!");
+		}
+	);
 }
 
 function check(){ 
 	//get checked radio button value
-	var res = document.querySelector('input[name="radios"]:checked').value;
+	var res = document.querySelector('input[name="question"]:checked')
+	if (res === null){
+		return null;
+	}
+	else
+		res = res.value;
 	
 	if (res == "true"){
+//		score += failCount * 10;
 		swal("Richtig!", "Gut gemacht. Auf zu neuen Aufgaben ...", "success");
-		closeQuestion();
-	} else {
-		failCount--;
-		swal("Leider falsch!", "Noch "+failCount+" Versuche übrig.", "error");
-		
-		if (failCount == 0)
-			closeQuestion();
-	}
-}
 
-function closeQuestion(){
-	var element = document.getElementById("quest-ol");
-	element.parentNode.removeChild(element);
-//	score += failCount * 10;
+	} else {
+
+		failCount--;
+		if (failCount == 0){
+			swal("Vergeigt!", "Für diese Aufgabe gibt es leider keine Punkte.", "error");
+		}
+		return false;
+	}
 }
