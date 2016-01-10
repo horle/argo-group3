@@ -14,14 +14,13 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script src="js/geojson.js"></script>
 	<script src="js/quests.js"></script>
-	<script src="js/functions.js"></script>
 	<title>ArGO</title>
 </head>
 <body>
 	<div data-role="page" id="map-page">
 		<div data-role="header">
 			<div id="score-circle"></div>
-			<a id="settings-btn" href="#settings" data-icon="gear" data-transition="slidedown" class="ui-btn-right">Settings</a>
+			<a id="detail-btn" href="#detail-panel" data-icon="gear" class="ui-btn-left">Panel auf</a>
 		</div>
 		<div data-role="content">
 			<div id="map"></div>
@@ -31,27 +30,42 @@
 			<img id="overlay-img"></img>
 			<p id="overlay-content"></p>
 		</div>
-	</div>
-
-	<div data-role="page" id="settings">
-		<div data-role="header">
-			<a id="map-btn" href="#map-page" data-icon="back" data-transition="slideup" class="ui-btn-right">Karte</a>
+	
+		<div data-role="panel" id="detail-panel" data-display="overlay">
+			<a id="map-btn" href="#map-page" data-icon="back" data-rel="close" class="ui-btn">zur&uuml;ck</a>
+			<h2 id="detail-panel-h2"></h2>
+			<img id="detail-panel-img">
+			<p id="detail-panel-p"></p>
+			<a id="call" onclick="callQuiz(0)" data-role="button" data-inline="true" class="ui-link ui-btn">Frage</a>
 		</div>
-		<div data-role="content"> noch ein test...
-			<div id="xp-circle">
-				<canvas width="40" height="40">
+	</div>
+	<div data-role="page" id="game-page">
+		<div data-role="header">
+			<h2>Quiz</h2>
+			<a id="quiz-close-btn" href="#map-page" data-icon="back" class="ui-btn-left">zur&uuml;ck</a>
+		</div>
+		<div data-role="content">
+			<h3 id="quiz-q"></h3>
+			<div class="ui-field-contain">
+				<fieldset data-role="controlgroup" id="quiz-a">
+				</fieldset>
 			</div>
+			<a onclick="checkQuiz()" data-role="button">Check!</a>
 		</div>
 	</div>
 <script src="js/map_init.js"></script>
+<script src="js/functions.js"></script>
 <script>
-
-setTimeout(map.invalidateSize.bind(map),400);
-
-$('#map-btn').click(function (event) {
-	setTimeout(map.invalidateSize.bind(map),400);
-	console.log("besser");
+$(document).on('pageshow', '#map-page', function () {
+	recalculateMapSize();
+//	setTimeout(recalculateMapSize,800);
 });
+function recalculateMapSize() {
+// Use full height in desktop browser: checked on MacOS with Firefox, Chrome and Safari
+	$(window).resize();
+// Avoid grey tiles in mobile browser: checked on iOS with Chrome and Safari
+	map.invalidateSize(false);
+};
 </script>
 </body>
 </html>

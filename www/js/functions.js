@@ -1,5 +1,27 @@
 var failCount;
 
+function callQuiz(id) {
+
+	prepareQuiz(id);
+	$(':mobile-pagecontainer').pagecontainer('change', '#game-page');
+}
+
+function prepareQuiz(id) {
+
+	var q = questions[id].easy[1];
+	$("#quiz-q").html(q.text);
+
+	var rad = "";
+   //create radio buttons for answers  
+   for (var i = 0; i < q.answers.length; i++) {
+
+      rad += "<input type='radio' name='answers' id='answer-"+i+"' value='"
+         + q.answers[i].correct + "'><label for='answer-"+i+"'>" + q.answers[i].text + "</label>";
+   }
+	failCount = q.answers.length - 1;
+	$("#quiz-a").html(rad);
+}
+/*
 function popQuestion(id) {
 	
 	//get question by id
@@ -37,29 +59,65 @@ function popQuestion(id) {
 		}
 	);
 }
-
-function check(){ 
+*/
+function checkQuiz(){ 
+	console.log("check quiz called");
 	//get checked radio button value
-	var res = document.querySelector('input[name="question"]:checked')
+	var res = $('input[name=answers]:checked');
+	
 	if (res === null){
 		return null;
 	}
 	else
-		res = res.value;
+		res = res.val();
 	
 	if (res == "true"){
 //		score += failCount * 10;
-		swal("Richtig!", "Gut gemacht. Auf zu neuen Aufgaben ...", "success");
-
-	} else {
-
-		failCount--;
-		if (failCount == 0){
-			swal("Vergeigt!", "Für diese Aufgabe gibt es leider keine Punkte.", "error");
-		}
-		return false;
+		console.log("answer correct");
+		popResult(true, failCount);
 	}
+	else{
+		failCount--;
+		popResult(false, failCount);
+	}
+	return false;
+	
 }
+
+function popResult(res, fail) {
+
+	console.log("popresult called, res="+res);
+	var $popUp = $("<div/>").popup({
+		theme: 'a',
+		overlayTheme: 'b',
+		transition: "pop",
+	});
+	if (res == true || fail == 0)
+		$popUp.on("popupafterclose", function() {
+			$(this).remove();
+			$(':mobile-pagecontainer').pagecontainer('change', '#map-page');
+		});
+
+	var title = res == true ? "Sieg!" : "Falsch!";
+	var text = res == true ? "Herzlichen Glückwunsch! Du hast es geschafft." : "Leider nicht korrekt.";
+
+	$("<div/>", {
+		'data-role': "header",
+		'data-theme': "a"
+	}).append($("<h1>", {text:title})).appendTo($popUp);
+	
+	if (res == false)
+		if (failCount == 1)
+			text += " Noch 1 Versuch übri.";
+		else if (failCount == 0)
+			text += " Diese Aufgabe bringt dir keine Punkte.";
+		else
+			text += " Noch "+failCount+" Versuche übrig.";
+				
+	$("<p/>", { text : text }).appendTo($popUp);
+	$popUp.popup("open", {overlayTheme: "a"}).trigger("create");
+}
+
 
 // circle js code
 $('xp-circle').circleProgress({
