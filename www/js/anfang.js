@@ -1,0 +1,1 @@
+alert("Hallo, Herzlich Willkommen zu unserem Spiel!");

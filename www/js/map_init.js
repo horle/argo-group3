@@ -1,4 +1,7 @@
 var map;
+var high_score;
+var xp;
+var level;
 
 $(document).on('pageinit', "#map-page", function() {
 /*********MAP INITIALISING*********/
@@ -20,12 +23,7 @@ $(document).on('pageinit', "#map-page", function() {
 		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 	*/
-/*
-	var overlay = document.getElementById('overlay');
-	var content = document.getElementById('overlay-content');
-	var header = document.getElementById('overlay-h1');
-	var img = document.getElementById('overlay-img');
-*/
+	
 	var header = $("#detail-panel-h2");
 	var content = $("#detail-panel-p");
 	var img = $("#detail-panel-img");
@@ -48,10 +46,13 @@ $(document).on('pageinit', "#map-page", function() {
 		(function(feat) {
 			marker.on('click', function(e){
 				
-//				overlay.style.display = "none";
-				map.setView(e.latlng, 16, {animate: true});
+				map.setView(e.latlng, 15, {animate: true});
 				setContent(feat);
-//				overlay.style.display = "block";
+				$("#btn-start-quiz").bind('click',
+					function(feat) {
+						callQuiz(myPlaces.features[i].properties.id);
+					}
+				);
 				$("#detail-panel").panel('open');
 			});
 		})(feat);
@@ -64,12 +65,6 @@ $(document).on('pageinit', "#map-page", function() {
 		content.html(feat.properties.popupContent);
 		img.attr({'src': feat.properties.picURL});
 	}
-
-	// click somewhere on the map to hide the overlay div
-	map.on('click', function(e){
-		
-		overlay.style.display = 'none';
-	});
 
 /*******MAP INITIALISED********/
 

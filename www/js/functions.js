@@ -1,4 +1,6 @@
 var failCount;
+var local_score_max;
+var difficulty;
 
 function callQuiz(id) {
 
@@ -8,58 +10,44 @@ function callQuiz(id) {
 
 function prepareQuiz(id) {
 
-	var q = questions[id].easy[1];
+	//array of questions with certain difficulty
+	var q;
+
+	switch(difficulty) {
+		case "easy":
+			q = questions[id].easy[0]; break;
+		default:
+		case "intermediate":
+			q = questions[id].intermediate[0]; break;
+		case "hard":
+			q = questions[id].hard[0]; break;	
+	}
+
 	$("#quiz-q").html(q.text);
 
 	var rad = "";
-   //create radio buttons for answers  
-   for (var i = 0; i < q.answers.length; i++) {
-
-      rad += "<input type='radio' name='answers' id='answer-"+i+"' value='"
-         + q.answers[i].correct + "'><label for='answer-"+i+"'>" + q.answers[i].text + "</label>";
-   }
-	failCount = q.answers.length - 1;
-	$("#quiz-a").html(rad);
-}
-/*
-function popQuestion(id) {
-	
-	//get question by id
-	var q = questions.questions[id];
-
-	//counter for wrong answers. one less than number of possibilities
-	failCount = q.answers.length - 1;
-	
-	var rad = "";
-	//create radio buttons for answers	
-	for (var i = 0; i < q.answers.length; i++) {
 		
-		rad += "<div class=\"answer\"><input class=\"visibleInput\" type=\"radio\" name=\"question\" value="
-			+ q.answers[i].correct + "><span>" + q.answers[i].text + "</span></div><br>";
-	}
-	
-	var that = this;
-	swal({
-		title: q.title,
-		text: q.text + "<br>"+rad,
-		html: true,
-		closeOnConfirm: false
-	}, function() {
-			ret = that.check();
-			if (ret === false){
-				if (failCount === 1)
-					swal.showInputError("Leider falsch! Noch 1 Versuch übrig.");
-				else
-					swal.showInputError("Leider falsch! Noch "+failCount+" Versuche übrig.");
-					
-				return false;
-			} else
-			if (ret === null)
-				swal.showInputError("Bitte eine Antwort auswählen!");
+	if (q.type == "mc") {
+	   //create radio buttons for answers  
+		for (var i = 0; i < q.answers.length; i++) {
+
+			rad += "<input type='radio' name='answers' id='answer-"+i+"' value='"
+				+ q.answers[i].correct + "'><label for='answer-"+i+"'>" + q.answers[i].text + "</label>";
 		}
-	);
+		
+		failCount = q.answers.length - 1;
+		local_score_max = failCount * 10;
+		$("#quiz-a").html(rad);
+	}
+	if (q.type == "input") {
+		
+
+	}
+	if (q.type == "estimate") {
+
+	}
 }
-*/
+
 function checkQuiz(){ 
 	console.log("check quiz called");
 	//get checked radio button value
@@ -72,34 +60,33 @@ function checkQuiz(){
 		res = res.val();
 	
 	if (res == "true"){
-//		score += failCount * 10;
 		console.log("answer correct");
-		popResult(true, failCount);
+		popResult(true);
 	}
 	else{
 		failCount--;
-		popResult(false, failCount);
+		popResult(false);
 	}
 	return false;
-	
 }
 
-function popResult(res, fail) {
+function popResult(res) {
 
-	console.log("popresult called, res="+res);
+	var local_score = failCount * 10;
+
 	var $popUp = $("<div/>").popup({
 		theme: 'a',
 		overlayTheme: 'b',
 		transition: "pop",
 	});
-	if (res == true || fail == 0)
+	if (res == true || failCount == 0)
 		$popUp.on("popupafterclose", function() {
 			$(this).remove();
 			$(':mobile-pagecontainer').pagecontainer('change', '#map-page');
 		});
 
-	var title = res == true ? "Sieg!" : "Falsch!";
-	var text = res == true ? "Herzlichen Glückwunsch! Du hast es geschafft." : "Leider nicht korrekt.";
+	var title = res == true ? "Yeah!" : "Oh weh!";
+	var text = res == true ? "Herzlichen Glückwunsch! Du hast die Frage richtig beantwortet und "+local_score+" von "+local_score_max+" Punkten erzielt!" : "Leider nicht korrekt.";
 
 	$("<div/>", {
 		'data-role': "header",
@@ -108,11 +95,11 @@ function popResult(res, fail) {
 	
 	if (res == false)
 		if (failCount == 1)
-			text += " Noch 1 Versuch übri.";
+			text += " Noch 1 Versuch übrig.";
 		else if (failCount == 0)
 			text += " Diese Aufgabe bringt dir keine Punkte.";
 		else
-			text += " Noch "+failCount+" Versuche übrig.";
+			text += " Nochmal versuchen! Noch "+failCount+" Versuche übrig.";
 				
 	$("<p/>", { text : text }).appendTo($popUp);
 	$popUp.popup("open", {overlayTheme: "a"}).trigger("create");
@@ -120,8 +107,19 @@ function popResult(res, fail) {
 
 
 // circle js code
-$('xp-circle').circleProgress({
-    value: 0.6
+$('#score-circle').circleProgress({
+	value: 0.6,
+	size: 40,
+	fill: { color: '#ff1e41' } 
 }).on('circle-animation-progress', function(event, progress) {
-    $(this).find('strong').html(parseInt(100 * progress) + '<i>%</i>');
+	$(this).find('strong').html(parseInt(24 * progress));
 });
+
+$('#xp-circle').circleProgress({
+   value: 0.5,
+   size: 40,
+   fill: { color: '#55ff11' }
+}).on('circle-animation-progress', function(event, progress) {
+    $(this).find('strong').html(parseInt(87 * progress));
+});
+

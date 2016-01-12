@@ -18,8 +18,13 @@
 </head>
 <body>
 	<div data-role="page" id="map-page">
-		<div data-role="header">
-			<div id="score-circle"></div>
+		<div data-role="header" id="map-page-header">
+			<div id="xp-circle" class="ui-btn-right ui-btn-inline circle" data-position="fixed">
+				<strong></strong>
+			</div>
+			<div id="score-circle" class="ui-btn-right ui-btn-inline circle" data-position="fixed">
+				<strong></strong>
+			</div>
 			<a id="detail-btn" href="#detail-panel" data-icon="gear" class="ui-btn-left">Panel auf</a>
 		</div>
 		<div data-role="content">
@@ -36,7 +41,7 @@
 			<h2 id="detail-panel-h2"></h2>
 			<img id="detail-panel-img">
 			<p id="detail-panel-p"></p>
-			<a id="call" onclick="callQuiz(0)" data-role="button" data-inline="true" class="ui-link ui-btn">Frage</a>
+			<a id="btn-start-quiz" data-role="button" data-inline="true" class="ui-link ui-btn">Aufgaben</a>
 		</div>
 	</div>
 	<div data-role="page" id="game-page">
