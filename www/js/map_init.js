@@ -48,9 +48,10 @@ $(document).on('pageinit', "#map-page", function() {
 				
 				map.setView(e.latlng, 15, {animate: true});
 				setContent(feat);
+				// problem: event auf dem button bei öffnung des panels immer getriggert
 				$("#btn-start-quiz").bind('click',
 					function(feat) {
-						callQuiz(myPlaces.features[i].properties.id);
+						callQuiz(feat.properties.id);
 					}
 				);
 				$("#detail-panel").panel('open');
