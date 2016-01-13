@@ -4,6 +4,7 @@ var difficulty;
 
 function callQuiz(id) {
 
+    console.log(id);
 	prepareQuiz(id);
 	$(':mobile-pagecontainer').pagecontainer('change', '#game-page');
 }
