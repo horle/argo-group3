@@ -8,6 +8,27 @@ $(document).on('pageinit', "#map-page", function() {
 
 	map = L.map('map').setView([50.939, 6.959], 15);
 
+    function addMarker(i) {
+
+        var feat = myPlaces.features[i],
+            marker = L.marker(feat.geometry.coordinates, {icon: spqrIcon});
+
+        marker.on('click', function(e){
+
+            map.setView(e.latlng, 15, {animate: true});
+            setContent(feat);
+
+            $("#detail-panel").panel('open');
+            $("#btn-start-quiz").unbind('click');
+            $("#btn-start-quiz").on('click', function() {
+                callQuiz(feat.properties.id)
+            });
+
+        });
+
+        marker.addTo(map).bindPopup("<b>"+feat.properties.name+"</b>");
+    }
+
 	//lustig!
 	// https://www.mapbox.com/developers/api/maps/#mapids
 		 
@@ -41,20 +62,7 @@ $(document).on('pageinit', "#map-page", function() {
 	//filling map with points
 	for (var i = 0; i < myPlaces.features.length; i++){
 
-		feat = myPlaces.features[i];
-		var marker = L.marker(feat.geometry.coordinates, {icon: spqrIcon});
-		(function(feat) {
-			marker.on('click', function(e){
-				
-				map.setView(e.latlng, 15, {animate: true});
-				setContent(feat);
-				// problem: event auf dem button bei öffnung des panels immer getriggert
-				$("#btn-start-quiz").bind('click', callQuiz(feat.properties.id) );
-				$("#detail-panel").panel('open');
-			});
-		})(feat);
-
-		marker.addTo(map).bindPopup("<b>"+feat.properties.name+"</b>");
+        addMarker(i);
 	}
 
 	function setContent(feat) {
