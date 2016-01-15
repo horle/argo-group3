@@ -1,12 +1,12 @@
 var map;
-var high_score;
-var xp;
-var level;
+var high_score = 0;
+var xp = 0;
+var level = 1;
 
 $(document).on('pageinit', "#map-page", function() {
 /*********MAP INITIALISING*********/
 
-	map = L.map('map').setView([50.94, 6.95], 14);
+	map = L.map('map').setView([50.939, 6.959], 15);
 
 	//lustig!
 	// https://www.mapbox.com/developers/api/maps/#mapids

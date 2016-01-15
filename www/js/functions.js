@@ -10,9 +10,11 @@ function callQuiz(id) {
 
 function prepareQuiz(id) {
 
-	//array of questions with certain difficulty
-	var q;
+	//array of questions for certain object
+	var q_array = questions[id].quests;
+	var q = q_array[Math.floor(Math.random() * q_array.length)];
 
+/*
 	switch(difficulty) {
 		case "easy":
 			q = questions[id].easy[0]; break;
@@ -22,12 +24,14 @@ function prepareQuiz(id) {
 		case "hard":
 			q = questions[id].hard[0]; break;	
 	}
+*/
 
 	$("#quiz-q").html(q.text);
-
-	var rad = "";
+	var type = q.type;
 		
-	if (q.type == "mc") {
+	if (type == "mc") {
+	
+		var rad = "";
 	   //create radio buttons for answers  
 		for (var i = 0; i < q.answers.length; i++) {
 
@@ -39,43 +43,44 @@ function prepareQuiz(id) {
 		local_score_max = failCount * 10;
 		$("#quiz-a").html(rad);
 	}
-	if (q.type == "input") {
+	if (type == "estimate") {
 		
-
+		var solution = q.answer.sol;
+		var tolerances = q.answer.tolerances;
 	}
-	if (q.type == "estimate") {
+	if (type == "input") {
 
 	}
 }
 
 function checkQuiz(){ 
-	console.log("check quiz called");
 	//get checked radio button value
 	var res = $('input[name=answers]:checked');
+	var local_score = failCount * 10;
 	
-	if (res === null){
+	if (res == null){
 		return null;
 	}
 	else
 		res = res.val();
 	
 	if (res == "true"){
-		console.log("answer correct");
-		popResult(true);
+		popResult(true, local_score);
+		high_score += local_score;
 	}
 	else{
 		failCount--;
-		popResult(false);
+		popResult(false, local_score);
 	}
 	return false;
 }
 
-function popResult(res) {
+function popResult(res, local_score) {
 
-	var local_score = failCount * 10;
+	var sacrifice = local_score_max * 2;
 
 	var $popUp = $("<div/>").popup({
-		theme: 'a',
+		theme: 'b',
 		overlayTheme: 'b',
 		transition: "pop",
 	});
@@ -90,19 +95,29 @@ function popResult(res) {
 
 	$("<div/>", {
 		'data-role': "header",
-		'data-theme': "a"
+		'data-theme': "b"
 	}).append($("<h1>", {text:title})).appendTo($popUp);
 	
-	if (res == false)
-		if (failCount == 1)
-			text += " Noch 1 Versuch übrig.";
-		else if (failCount == 0)
-			text += " Diese Aufgabe bringt dir keine Punkte.";
-		else
-			text += " Nochmal versuchen! Noch "+failCount+" Versuche übrig.";
-				
-	$("<p/>", { text : text }).appendTo($popUp);
-	$popUp.popup("open", {overlayTheme: "a"}).trigger("create");
+	if (res == false) {
+		if (failCount == 1) {
+			text += " Nur noch ein Versuch übrig.";
+			$("<p/>", { text : text }).appendTo($popUp);
+		}
+		else if (failCount == 0) {
+			text += " Diese Aufgabe bringt dir keine Punkte. Du kannst, um deine Erfahrung für diese Aufgabe zu retten, "+sacrifice+" Punkte vom Highscore opfern. Möchtest du das?";
+			$("<p/>", { text : text, "data-dismissable" : false }).appendTo($popUp);
+//TODO: ADD EVENT FUNCTION
+			$("<a/>", { text: "Nein!", href: "#", class: "ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b", "data-rel":"back" }).appendTo($popUp);
+			$("<a/>", { text: "OK!", href: "#", class: "ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a", "data-rel":"back" }).appendTo($popUp);
+		}
+		else {
+			text += " Nochmal versuchen! Noch "+failCount+" Versuche übrig."
+			$("<p/>", { text : text }).appendTo($popUp);
+		}
+	} else
+		$("<p/>", { text : text }).appendTo($popUp);
+
+	$popUp.popup("open", {overlayTheme: "b"}).trigger("create");
 }
 
 

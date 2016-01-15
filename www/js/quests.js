@@ -1,7 +1,7 @@
 var questions = [
 {
 	'object': "nordtor",
-	"easy": [
+	"quests": [
 		{
 			"text": "Wie hie&szlig; der erste r&ouml;mische Kaiser?",
 			"type": "mc",
@@ -28,9 +28,7 @@ var questions = [
 			"text": "Nenne den Namen des bekannten Stadttores von Trier!",
 			"type": "input",
 			"answer": "Porta Nigra"
-		}],
-	"intermediate": [
-		{
+		},{
 			"text": "Welche Funktionen hatten Stadttore au&szlig;er der Funktion eines Einlasses?",
 			"type": "mc",
 			"answers": [
@@ -49,13 +47,13 @@ var questions = [
 	]
 },{
 	"object": "dionysos",
-	"easy": [
+	"quests": [
 		{// SCHAETZFRAGE IMPLEMENTIEREN
-			"text": "Sch&auml;tze! Wie viele Steinchen (tesserae) wurden f&uuml;r das K&ouml;lner Dionysos-Mosaik in etwa aufgewendet?",
+			"text": "Sch&auml;tze! Wie viele Steinchen (<i>tesserae</i>) wurden f&uuml;r das K&ouml;lner Dionysos-Mosaik in etwa aufgewendet?",
 			"type": "estimate",
 			"answer":
-				{	"text": 1500000,
-					"tolerance": 500000		}
+				{	"sol": 1500000,
+					"tolerances": [100000, 250000, 500000]	}
 		},{
 			"text": "Mit welchem Gott verbindet man den Namen 'Dionysos'?",
 			"type": "mc",
@@ -67,10 +65,7 @@ var questions = [
 				{	"text": "Gott des Krieges",
 					"correct": false			}
 			]
-		}
-	],
-	"intermediate": [
-		{
+		},{
 			"text": "Wo und wann traten die ersten Mosaike auf?",
 			"type": "mc",
 			"answers": [
@@ -96,7 +91,7 @@ var questions = [
 	]
 },{
 	"object": "deutz",
-	"easy": [
+	"quests": [
 		{
 			"text": "In welchem K&ouml;lner Stadtteil befindet sich das Kastell Divitia? (Antwort: K&ouml;ln-...)",
 			"type": "input",
@@ -112,10 +107,7 @@ var questions = [
 				{	"text": "Operationsbasen",
 					"correct": false			}
 			]
-		}
-	],
-	"intermediate": [
-		{
+		},{
 			"text": "Unter welchem r&ouml;mischen Kaiser wurde das Kastell errichtet?",
 			"type": "mc",
 			"answers": [
@@ -141,7 +133,7 @@ var questions = [
 	]
 },{
 	"object": "kapitol",
-	"easy": [
+	"quests": [
 		{
 			"text": "Welche Gottheiten wurden im Kapitolstempel verehrt?",
 			"type": "mc",
@@ -155,10 +147,7 @@ var questions = [
 				{	"text": "Mars, Juno und Miverva",
 					"correct": false			}
 			]
-		}
-	],
-	"intermediate": [
-		{
+		},{
 			"text": "Wie wird die Gruppe der drei hier verehrten Gottheiten auch genannt?",
 			"type": "mc",
 			"answers": [
@@ -171,10 +160,7 @@ var questions = [
 				{	"text": "Ehrw&uuml;rdige Trias",
 					"correct": false			}
 			]
-		}
-	],
-	"hard": [
-		{
+		},{
 			"text": "Um was f&uuml;r einen Tempel-Typ wird es sich mit gro&szlig;er Wahrscheinlichkeit gehandelt haben?",
 			"type": "mc",
 			"answers": [
@@ -191,7 +177,7 @@ var questions = [
 	]
 },{
 	"object": "praetorium",
-	"easy": [
+	"quests": [
 		{
 			"text": "Das Praetorium im antiken K&ouml;ln war der Amtssitz der/des r&ouml;mischen ...",
 			"type": "mc",
@@ -205,10 +191,7 @@ var questions = [
 				{	"text": "Aedilen",
 					"correct": false			}
 			]
-		}
-	],
-	"intermediate": [
-		{
+		},{
 			"text": "Das r&ouml;mische K&ouml;ln war Bestandteil welcher r&ouml;mischen Provinz?",
 			"type": "mc",
 			"answers": [
@@ -221,10 +204,7 @@ var questions = [
 				{	"text": "Raetien",
 					"correct": false			}
 			]
-		}
-	],
-	"hard": [
-		{
+		},{
 			"text": "Urspr&uuml;nglich war das Praetorium ...",
 			"type": "mc",
 			"answers": [
@@ -241,7 +221,7 @@ var questions = [
 	]
 },{
 	"object": "ubier",
-	"easy": [
+	"quests": [
 		{
 			"text": "Aus welchem Material besteht das Monument?",
 			"type": "mc",
@@ -268,10 +248,7 @@ var questions = [
 				{	"text": "Zur Kaiserzeit im Rhein heimischer Speisefisch",
 					"correct": false			}
 			]
-		}			
-	],
-	"intermediate": [
-		{
+		},{
 			"text": "In welchem Jahr wurde das Ubiermonument vermutlich errichtet?",
 			"type": "mc",
 			"answers": [
@@ -284,10 +261,7 @@ var questions = [
 				{	"text": "ca. 200 v. Chr.",
 					"correct": false			}
 			]
-		}
-	],
-	"hard": [
-		{
+		},{
 			"text": "Das Fundament des Monuments besteht aus einem Gemisch aus Kalk, Sand und Steinchen, das beim Trocknen erh&auml;rtert. Wie hei&szlig;t ein weiteres, f&uuml;r die Konstruktion r&ouml;mischer Go&szlig;bauten essentielles Material?",
 			"type": "mc",
 			"answers": [
@@ -304,7 +278,7 @@ var questions = [
 	]
 },{
 	"object": "roemerturm",
-	"easy": [
+	"quests": [
 		{
 			"text": "Vom Turm aus kann man bis &uuml;ber den Rhein, und damit die Grenze des r&ouml;mischen Reiches sehen. Wie wurde das Land hinter dem Rhein von den R&ouml;mern genannt?",
 			"type": "mc",
@@ -318,10 +292,7 @@ var questions = [
 				{	"text": "Belgica",
 					"correct": false			}
 			]
-		}
-	],
-	"intermediate": [
-		{
+		},{
 			"text": "Der Turm ist in die Stadtmauer eingegliedert und besch&uuml;tzte mit ihr die Stadt vor Eindringlingen. Wie viele solcher T&uuml;rme gibt es insgesamt?",
 			"type": "mc",
 			"answers": [
@@ -334,10 +305,7 @@ var questions = [
 				{	"text": "32",
 					"correct": false			}
 			]
-		}
-	],
-	"hard": [
-		{
+		},{
 			"text": "Die Au&szlig;enwand des Turmes ist mit verschiedenfarbigen Steinen reich verziert. Von welchem Material fehlt aber jede Spur?",
 			"type": "mc",
 			"answers": [
