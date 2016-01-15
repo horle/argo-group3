@@ -1,23 +1,81 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta charset="utf-8">
+	<meta name="format-detection" content="telephone=no" >
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi">
+
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-	<script src="dist/sweetalert.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+
 	<title>ArGO</title>
 </head>
 <body>
-	<div id="map"></div>
-	<div id="overlay">
-		<h1 id="overlay-h1"></h1>
-		<img id="overlay-img"></img>
-		<p id="overlay-content"></p>
+	<div data-role="page" id="map-page" data-theme="b">
+		<div data-role="header" id="map-page-header">
+			<div id="xp-circle" class="ui-btn-right ui-btn-inline circle" data-position="fixed">
+				<strong></strong>
+			</div>
+			<div id="score-circle" class="ui-btn-right ui-btn-inline circle" data-position="fixed">
+				<strong></strong>
+			</div>
+			<a id="detail-btn" href="#detail-panel" data-icon="gear" class="ui-btn-left">Panel auf</a>
+		</div>
+		<div data-role="content">
+			<div id="map"></div>
+		</div>
+		<div id="overlay">
+			<h1 id="overlay-h1"></h1>
+			<img id="overlay-img"></img>
+			<p id="overlay-content"></p>
+		</div>
+	
+		<div data-role="panel" id="detail-panel" data-display="overlay">
+			<a id="map-btn" href="#map-page" data-icon="back" data-rel="close" class="ui-btn">zur&uuml;ck</a>
+			<h2 id="detail-panel-h2"></h2>
+			<img id="detail-panel-img">
+			<p id="detail-panel-p"></p>
+			<a id="btn-start-quiz" data-role="button" data-inline="true" class="ui-link ui-btn">Aufgaben</a>
+		</div>
 	</div>
-	<script src="geojson.js"></script>
-	<script src="map_init.js"></script>
-	<script src="quests.js"></script>
-	<script src="functions.js"></script>
+	<div data-role="page" id="game-page" data-theme="b">
+		<div data-role="header">
+			<h2>Quiz</h2>
+			<a id="quiz-close-btn" href="#map-page" data-icon="back" class="ui-btn-left">zur&uuml;ck</a>
+		</div>
+		<div data-role="content">
+			<h3 id="quiz-q"></h3>
+			<div class="ui-field-contain">
+				<fieldset data-role="controlgroup" id="quiz-a">
+				</fieldset>
+			</div>
+			<a onclick="checkQuiz()" data-role="button">Check!</a>
+		</div>
+	</div>
+
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="dist/circle-progress.js"></script>
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	<script src="dist/sweetalert.min.js"></script>
+	<script src="js/geojson.js"></script>
+	<script src="js/quests.js"></script>
+
+<script src="js/map_init.js"></script>
+<script src="js/functions.js"></script>
+<script>
+$(document).on('pageshow', '#map-page', function () {
+	recalculateMapSize();
+//	setTimeout(recalculateMapSize,800);
+});
+function recalculateMapSize() {
+// Use full height in desktop browser: checked on MacOS with Firefox, Chrome and Safari
+	$(window).resize();
+// Avoid grey tiles in mobile browser: checked on iOS with Chrome and Safari
+	map.invalidateSize(false);
+};
+</script>
 </body>
 </html>
