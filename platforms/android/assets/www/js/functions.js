@@ -2,9 +2,26 @@ var failCount;
 var local_score_max;
 var difficulty;
 
+function renderBars(){
+	//store the references outside the event handler!
+	var $window = $(window);
+
+	function checkWidth() {
+		var windowsize = $window.width();
+		if (windowsize > 440) {
+			initBars();
+		}
+		else
+			initCircles();
+	}
+	// Execute on load
+	checkWidth();
+	// Bind event listener
+	$(window).resize(checkWidth);
+}
+
 function callQuiz(id) {
 
-    console.log(id);
 	prepareQuiz(id);
 	$(':mobile-pagecontainer').pagecontainer('change', '#game-page');
 }
@@ -14,18 +31,6 @@ function prepareQuiz(id) {
 	//array of questions for certain object
 	var q_array = questions[id].quests;
 	var q = q_array[Math.floor(Math.random() * q_array.length)];
-
-/*
-	switch(difficulty) {
-		case "easy":
-			q = questions[id].easy[0]; break;
-		default:
-		case "intermediate":
-			q = questions[id].intermediate[0]; break;
-		case "hard":
-			q = questions[id].hard[0]; break;	
-	}
-*/
 
 	$("#quiz-q").html(q.text);
 	var type = q.type;
@@ -78,6 +83,7 @@ function checkQuiz(){
 
 function popResult(res, local_score) {
 
+	// score points to subtract, if fail
 	var sacrifice = local_score_max * 2;
 
 	var $popUp = $("<div/>").popup({
@@ -121,21 +127,84 @@ function popResult(res, local_score) {
 	$popUp.popup("open", {overlayTheme: "b"}).trigger("create");
 }
 
+function initBars(){
 
-// circle js code
-$('#score-circle').circleProgress({
-	value: 0.6,
-	size: 40,
-	fill: { color: '#ff1e41' } 
-}).on('circle-animation-progress', function(event, progress) {
-	$(this).find('strong').html(parseInt(24 * progress));
-});
+	console.log("bars initialising");
 
-$('#xp-circle').circleProgress({
-   value: 0.5,
-   size: 40,
-   fill: { color: '#55ff11' }
-}).on('circle-animation-progress', function(event, progress) {
-    $(this).find('strong').html(parseInt(87 * progress));
-});
+	$("#xp-container").addClass("progressbar tiny-green").html("<div></div>");
+	$("#score-container").addClass("progressbar tiny-green").html("<div></div>");
+}
+
+function initCircles(){
+
+	console.log("circles initialising");
+
+	//reset class attr
+	$("#xp-container").removeClass("progressbar tiny-green").html("<div id='xp-circle'></div>");
+	$("#score-container").removeClass("progressbar tiny-green").html("<div id='score-circle'></div>");
+	//getBarValues(); needs to be implemented with cookies
+
+	// circle js code
+	var score_c = $('#score-circle').circleProgress({
+		value: 0,
+		size: 40,
+		fill: { color: '#ff1e41' } 
+	});
+
+	var xp_c = $('#xp-circle').circleProgress({
+		value: 0,
+		size: 40,
+		fill: { color: '#55ff11' }
+	});
+
+	score_c.on('circle-animation-progress', function(e, v) {
+		var obj = $(this).data('circle-progress'),
+			ctx = obj.ctx,
+			s = obj.size,
+			sv = (100 * v).toFixed(),
+			fill = obj.arcFill;
+	
+		ctx.save();
+		ctx.font = "bold " + s / 2.5 + "px sans-serif";
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+		ctx.fillStyle = fill;
+		ctx.fillText(sv, s / 2, s / 2);
+		ctx.restore();
+	});
+	xp_c.on('circle-animation-progress', function(e, v) {
+      var obj = $(this).data('circle-progress'),
+         ctx = obj.ctx,
+         s = obj.size,
+         sv = (100 * v).toFixed(),
+         fill = obj.arcFill;
+
+      ctx.save();
+      ctx.font = "bold " + s / 2.5 + "px sans-serif";
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = fill;
+      ctx.fillText(sv, s / 2, s / 2);
+      ctx.restore();
+   });
+}
+
+function setXPBar(x){
+
+	var progressBarWidth = x * $('#xp-container').width() / 100;
+	$('#xp-container').find('div').animate({ width: progressBarWidth }, 500).html(x + "% ");
+}
+function getXPBar(){
+
+	return $('#xp-circle').circleProgress('value');
+}
+function setScoreBar(x){
+
+	var progressBarWidth = x * $('#score-container').width() / 100;
+	$('#score-container').find('div').animate({ width: progressBarWidth }, 500).html(x + "% ");
+}
+function getScoreBar(){
+
+	return $('#score-circle').circleProgress('value');
+}
 
