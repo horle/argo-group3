@@ -70,7 +70,8 @@ $(document).on('pageinit', "#map-page", function() {
 		content.html(feat.properties.popupContent);
 		img.attr({'src': feat.properties.picURL});
 	}
-
+	
+	renderBars();
 /*******MAP INITIALISED********/
 
 });
