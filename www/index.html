@@ -10,6 +10,10 @@
 	<link rel="stylesheet" type="text/css" href="dist/progressbar.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
+<!-- LevelUp -->
+	<script type="text/javascript" src="statusbar/statusbar.js"></script>
+	<link rel="stylesheet" type="text/css" href="statusbar/statusbar.css" />
+
 	<title>ArGO</title>
 </head>
 <body>
@@ -24,6 +28,33 @@
 		<div data-role="content">
 			<div id="map"></div>
 		</div>
+		
+<!-- Levelbar -->
+		<div class='statusbar_box' id='statusbar_box'>
+			<div class='statusbar_bar' id='statusbar_bar'></div>
+			<div class='statusbar_text' id='statusbar_text'>xyz</div>
+		</div>
+	
+<!--  Statusbar Prozentwerte setzen -->
+		<ul>
+			<li><a href="javascript:addPercent(5)">+5</a></li>
+			<li><a href="javascript:addPercent(10)">+10</a></li>
+			<li><a href="javascript:addPercent(20)">+20</a></li>
+			<li><a href="javascript:addPercent(-5)">-5</a></li>
+			<li><a href="javascript:addPercent(-10)">-10</a></li>
+			<li><a href="javascript:addPercent(-20)">-20</a></li>
+			<li><a href="javascript:setPercent(0)">=0%</a></li>
+			<li><a href="javascript:setPercent(50)">=50%</a></li>
+			<li><a href="javascript:setPercent(100)">=100%</a></li>
+		</ul>	
+	
+<!-- Aufruf der Levelbar -->	
+		<script type="text/javascript">
+			setDescription('Level');
+			main(0);
+		</script>
+		
+		
 		<div id="overlay">
 			<h1 id="overlay-h1"></h1>
 			<img id="overlay-img"></img>
