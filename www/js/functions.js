@@ -23,6 +23,15 @@ function renderBars(){
 function callQuiz(id) {
 
 	prepareQuiz(id);
+}
+
+function invokeGamePage(type, id) {
+	
+	if (type == "mc")
+		prepareQuiz(id);
+	else if (type == "breakanoid")
+		prepareBreakanoid();
+
 	$(':mobile-pagecontainer').pagecontainer('change', '#game-page');
 }
 
@@ -125,6 +134,12 @@ function popResult(res, local_score) {
 		$("<p/>", { text : text }).appendTo($popUp);
 
 	$popUp.popup("open", {overlayTheme: "b"}).trigger("create");
+}
+
+function prepareBreakanoid() {
+	
+	$("#game-content").html("<canvas id='breakanoid'></canvas>");
+	startBreakanoid();
 }
 
 function initBars(){
