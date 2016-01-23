@@ -16,33 +16,17 @@
 	<title>ArGO</title>
 </head>
 <body>
+<!-- MAP PAGE -->
 	<div data-role="page" id="map-page" data-theme="b">
 		<div data-role="header" id="map-page-header">
 			<div id="bar-container">
 				<div id="xp-container"></div>
 				<div id="score-container"></div>
 			</div>
-<!--		<a id="detail-btn" href="#detail-panel" data-icon="gear" class="ui-btn-left">Panel auf</a> -->
 		</div>
 		<div data-role="content">
 			<div id="map"></div>
 		</div>
-		
-	
-	
-<!-- Aufruf der Levelbar -->	
-		<script type="text/javascript">
-			setDescription('Level');
-			main(0);
-		</script>
-		
-		
-		<div id="overlay">
-			<h1 id="overlay-h1"></h1>
-			<img id="overlay-img"></img>
-			<p id="overlay-content"></p>
-		</div>
-	
 		<div data-role="panel" id="detail-panel" data-display="overlay">
 			<a id="map-btn" href="#map-page" data-icon="back" data-rel="close" class="ui-btn">zur&uuml;ck</a>
 			<h2 id="detail-panel-h2"></h2>
@@ -51,24 +35,11 @@
 			<a id="btn-start-quiz" data-role="button" data-inline="true" class="ui-link ui-btn">Aufgaben</a>
 		</div>
 	</div>
-	<div data-role="page" id="game-page" data-theme="b">
-		<div id="game-header" data-role="header">
-			<h2>Quiz</h2>
-			<a id="quiz-close-btn" href="#map-page" data-icon="back" class="ui-btn-left">zur&uuml;ck</a>
-		</div>
-		<div id="game-content" data-role="content">
-			<h3 id="quiz-q"></h3>
-			<div class="ui-field-contain">
-				<fieldset data-role="controlgroup" id="quiz-a">
-				</fieldset>
-			</div>
-			<a onclick="checkQuiz()" data-role="button">Check!</a>
-		</div>
-	</div>
+<!-- GAME PAGE -->
+	<div data-role="page" id="game-page" data-theme="b"></div>
 
 	<script src="dist/circle-progress.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-	<script src="dist/jQMProgressBar.js"></script>
 	<script src="js/geojson.js"></script>
 	<script src="js/quests.js"></script>
 	<script src="js/breakanoid.js"></script>

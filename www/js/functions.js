@@ -2,17 +2,22 @@ var failCount;
 var local_score_max;
 var difficulty;
 
-function renderBars(){
+function renderIndicators(xp, score){
 	//store the references outside the event handler!
 	var $window = $(window);
 
 	function checkWidth() {
 		var windowsize = $window.width();
 		if (windowsize > 440) {
+			smallWidth = false;
 			initBars();
+			updateIndicators();
 		}
-		else
+		else {
+			smallWidth = true;
 			initCircles();
+			updateIndicators();
+		}
 	}
 	// Execute on load
 	checkWidth();
@@ -20,60 +25,115 @@ function renderBars(){
 	$(window).resize(checkWidth);
 }
 
+// DEPRECATED, JUST FOR DEBUG
 function callQuiz(id) {
 
-	prepareQuiz(id);
+	invokeGamePage(id);
 }
 
-function invokeGamePage(type, id) {
-	
-	if (type == "mc")
-		prepareQuiz(id);
-	else if (type == "breakanoid")
-		prepareBreakanoid();
-
-	$(':mobile-pagecontainer').pagecontainer('change', '#game-page');
-}
-
-function prepareQuiz(id) {
+function invokeGamePage(id) {
 
 	//array of questions for certain object
 	var q_array = questions[id].quests;
 	var q = q_array[Math.floor(Math.random() * q_array.length)];
-
-	$("#quiz-q").html(q.text);
 	var type = q.type;
+	
+	if (type == "mc" || type == "estimate" || type == "input") {
+
+		prepareQuiz(q);
+		$(':mobile-pagecontainer').pagecontainer('change', '#game-page');
+	}
+	else if (type == "breakanoid") {
 		
+		prepareBreakanoid(q);
+		$(':mobile-pagecontainer').pagecontainer('change', '#game-page');
+	}
+}
+
+function prepareQuiz(q) {
+
+	$page = $('#game-page').empty();
+	$gHead = $('<div>').attr({'id':'game-header','data-role':'header'})
+		.appendTo($page);
+
+	$gHead.append( $('<h2>').text("Quiz") );
+	$gHead.append(	$('<a>').attr({'id':'game-close-btn',
+											'href':'#map-page',
+											'data-icon':'back',
+											'class':'ui-btn-left'
+		}).text("back") );
+
+	$gContent = $('<div>').attr({'id':'game-content','data-role':'content'})
+		.appendTo($page);
+//WEG TODO
+	$gContent.enhanceWithin();
+
+	var type = q.type;
+	$gContent.append( $('<h3>').text(q.text) );
+
 	if (type == "mc") {
+
+		$gRadioContainer = $('<div>').attr({'class':'ui-field-contain'})
+			.appendTo($gContent);
+		$gRadioFieldSet = $('<fieldset>').attr({'data-role':'controlgroup'})
+			.appendTo($gRadioContainer);
 	
 		var rad = "";
 	   //create radio buttons for answers  
 		for (var i = 0; i < q.answers.length; i++) {
 
-			rad += "<input type='radio' name='answers' id='answer-"+i+"' value='"
-				+ q.answers[i].correct + "'><label for='answer-"+i+"'>" + q.answers[i].text + "</label>";
+			$('<input>').attr({	'type':'radio',
+										'name':'q-answers',
+										'id':'answer-'+i,
+										'value':q.answers[i].correct
+				}).appendTo($gRadioFieldSet);
+
+			$('<label>').attr({'for':'answer-'+i}).text(q.answers[i].text)
+				.appendTo($gRadioFieldSet);
 		}
+
+		$('<a>').attr({'data-role':'button','onclick':'checkQuiz()'})
+			.text("Check!").appendTo($gContent);
 		
 		failCount = q.answers.length - 1;
-		local_score_max = failCount * 10;
-		$("#quiz-a").html(rad);
+		local_score_max = failCount * 10;	
+
+		//update jquery mobile
+		$gHead.toolbar();
+		$gContent.enhanceWithin();
 	}
 	if (type == "estimate") {
 		
 		var solution = q.answer.sol;
 		var tolerances = q.answer.tolerances;
+
+
 	}
 	if (type == "input") {
 
+		$('<input>').attr({	'type':'text',
+									'data-clear-btn':true,
+									'id':'q-input',
+									'placeholder':'Deine Antwort'
+			}).appendTo($gContent);
+		
+		function checkQuizInput() {
+
+			if ($('#q-input').val() == q.answer.sol) {
+
+				console.log("richtig");
+			}
+		}
 	}
 }
 
 function checkQuiz(){ 
 	//get checked radio button value
-	var res = $('input[name=answers]:checked');
+	var res = $('input[name=q-answers]:checked');
 	var local_score = failCount * 10;
 	
 	if (res == null){
+		console.log("CARE: res == null");
 		return null;
 	}
 	else
@@ -81,11 +141,17 @@ function checkQuiz(){
 	
 	if (res == "true"){
 		popResult(true, local_score);
-		high_score += local_score;
+		updateXP(local_score_max);
+		updateScore(local_score);
 	}
 	else{
 		failCount--;
-		popResult(false, local_score);
+		// decision to sacrifice score points for xp
+		if ( popResult(false, local_score) == 1 ) {
+			
+			updateXP(local_score_max);
+			updateScore(local_score_max * (-2));
+		}
 	}
 	return false;
 }
@@ -123,8 +189,8 @@ function popResult(res, local_score) {
 			text += " Diese Aufgabe bringt dir keine Punkte. Du kannst, um deine Erfahrung für diese Aufgabe zu retten, "+sacrifice+" Punkte vom Highscore opfern. Möchtest du das?";
 			$("<p/>", { text : text, "data-dismissable" : false }).appendTo($popUp);
 //TODO: ADD EVENT FUNCTION
-			$("<a/>", { text: "Nein!", href: "#", class: "ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b", "data-rel":"back" }).appendTo($popUp);
-			$("<a/>", { text: "OK!", href: "#", class: "ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a", "data-rel":"back" }).appendTo($popUp);
+			$("<a/>", {text:"Nein!",href:"#","onClick":"return -1;",class:"ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b","data-rel":"back"}).appendTo($popUp);
+			$("<a/>", {text:"OK!",href:"#","onClick":"return 1;",class:"ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a","data-rel":"back"}).appendTo($popUp);
 		}
 		else {
 			text += " Nochmal versuchen! Noch "+failCount+" Versuche übrig."
@@ -134,6 +200,32 @@ function popResult(res, local_score) {
 		$("<p/>", { text : text }).appendTo($popUp);
 
 	$popUp.popup("open", {overlayTheme: "b"}).trigger("create");
+}
+
+function updateIndicators(xp, score) {
+
+	updateXP(xp);
+	updateScore(score);
+}
+
+function updateXP(xp) {
+	
+	global_xp += xp;
+
+	if (smallWidth == false)
+		setXPBar(global_xp);
+	else
+		setXPCircle(global_xp);
+}
+
+function updateScore(score) {
+
+	global_score += score;
+	
+	if (smallWidth == false)
+		setScoreBar(global_score);
+	else
+		setScoreCircle(global_score);
 }
 
 function prepareBreakanoid() {
@@ -202,6 +294,16 @@ function initCircles(){
       ctx.fillText(sv, s / 2, s / 2);
       ctx.restore();
    });
+}
+
+function setScoreCircle(x) {
+
+	$('#score-circle').circleProgress({value: x});
+}
+
+function setXPCircle(x) {
+
+	$('#xp-circle').circleProgress({value: x});
 }
 
 function setXPBar(x){
