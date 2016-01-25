@@ -1,4 +1,4 @@
-## argo-group3
+## Life of Julius
 Das ArGO-Projekt der Gruppe 3/C. 
 
 Nutzt:
