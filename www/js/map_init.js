@@ -7,6 +7,9 @@ var level = 1;
 $(document).on('pageinit', "#map-page", function() {
 /*********MAP INITIALISING*********/
 
+	global_xp = readCookie("xp");
+	global_score = readCookie("score");
+
 	map = L.map('map').setView([50.939, 6.959], 15);
 
     function addMarker(i) {

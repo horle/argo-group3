@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 	<link rel="stylesheet" type="text/css" href="dist/progressbar.css">
+	<link rel="stylesheet" type="text/css" href="dist/thermo.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 
@@ -19,6 +20,7 @@
 <!-- MAP PAGE -->
 	<div data-role="page" id="map-page" data-theme="b">
 		<div data-role="header" id="map-page-header">
+			<a href="#level-panel" data-icon="star" data-iconpos="left" id="level-btn" data-role="button">Level</a>
 			<div id="bar-container">
 				<div id="xp-container"></div>
 				<div id="score-container"></div>
@@ -26,6 +28,18 @@
 		</div>
 		<div data-role="content">
 			<div id="map"></div>
+		</div>
+		<div data-role="panel" id="level-panel" data-display="push">
+			<div id="thermometer">
+				<div class="track">
+					<div class="goal">
+						<div class="amount" id="thermo-top"></div>
+					</div>
+					<div class="progress">
+						<div class="amount" id="thermo-progress"></div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div data-role="panel" id="detail-panel" data-display="overlay">
 			<a id="map-btn" href="#map-page" data-icon="back" data-rel="close" class="ui-btn">zur&uuml;ck</a>
@@ -40,22 +54,21 @@
 
 	<script src="dist/circle-progress.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	<script src="dist/thermo.js"></script>
 	<script src="js/geojson.js"></script>
 	<script src="js/quests.js"></script>
 	<script src="js/breakanoid.js"></script>
 	<script src="js/functions.js"></script>
 	<script src="js/map_init.js"></script>
-<script>
-$(document).on('pageshow', '#map-page', function () {
-	recalculateMapSize();
-//	setTimeout(recalculateMapSize,800);
-});
-function recalculateMapSize() {
-// Use full height in desktop browser: checked on MacOS with Firefox, Chrome and Safari
-	$(window).resize();
-// Avoid grey tiles in mobile browser: checked on iOS with Chrome and Safari
-	map.invalidateSize(false);
-};
-</script>
+	<script>
+		$(document).on('pageshow', '#map-page', function() {
+			recalculateMapSize();
+		});
+
+		function recalculateMapSize() {
+			$(window).resize();
+			map.invalidateSize(false);
+		}
+	</script>
 </body>
 </html>
