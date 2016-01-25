@@ -5,31 +5,42 @@
 	<meta name="format-detection" content="telephone=no" >
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi">
 
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 	<link rel="stylesheet" type="text/css" href="dist/progressbar.css">
+	<link rel="stylesheet" type="text/css" href="dist/thermo.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+
 
 	<title>ArGO</title>
 </head>
 <body>
+<!-- MAP PAGE -->
 	<div data-role="page" id="map-page" data-theme="b">
 		<div data-role="header" id="map-page-header">
+			<a href="#level-panel" data-icon="star" data-iconpos="left" id="level-btn" data-role="button">Level</a>
 			<div id="bar-container">
 				<div id="xp-container"></div>
 				<div id="score-container"></div>
 			</div>
-<!--		<a id="detail-btn" href="#detail-panel" data-icon="gear" class="ui-btn-left">Panel auf</a> -->
 		</div>
 		<div data-role="content">
 			<div id="map"></div>
 		</div>
-		<div id="overlay">
-			<h1 id="overlay-h1"></h1>
-			<img id="overlay-img"></img>
-			<p id="overlay-content"></p>
+		<div data-role="panel" id="level-panel" data-display="push">
+			<div id="thermometer">
+				<div class="track">
+					<div class="goal">
+						<div class="amount" id="thermo-top"></div>
+					</div>
+					<div class="progress">
+						<div class="amount" id="thermo-progress"></div>
+					</div>
+				</div>
+			</div>
 		</div>
-	
 		<div data-role="panel" id="detail-panel" data-display="overlay">
 			<a id="map-btn" href="#map-page" data-icon="back" data-rel="close" class="ui-btn">zur&uuml;ck</a>
 			<h2 id="detail-panel-h2"></h2>
@@ -38,43 +49,26 @@
 			<a id="btn-start-quiz" data-role="button" data-inline="true" class="ui-link ui-btn">Aufgaben</a>
 		</div>
 	</div>
-	<div data-role="page" id="game-page" data-theme="b">
-		<div data-role="header">
-			<h2>Quiz</h2>
-			<a id="quiz-close-btn" href="#map-page" data-icon="back" class="ui-btn-left">zur&uuml;ck</a>
-		</div>
-		<div data-role="content">
-			<h3 id="quiz-q"></h3>
-			<div class="ui-field-contain">
-				<fieldset data-role="controlgroup" id="quiz-a">
-				</fieldset>
-			</div>
-			<a onclick="checkQuiz()" data-role="button">Check!</a>
-		</div>
-	</div>
+<!-- GAME PAGE -->
+	<div data-role="page" id="game-page" data-theme="b"></div>
 
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script src="dist/circle-progress.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-	<script src="dist/jQMProgressBar.js"></script>
+	<script src="dist/thermo.js"></script>
 	<script src="js/geojson.js"></script>
 	<script src="js/quests.js"></script>
+	<script src="js/breakanoid.js"></script>
+	<script src="js/functions.js"></script>
+	<script src="js/map_init.js"></script>
+	<script>
+		$(document).on('pageshow', '#map-page', function() {
+			recalculateMapSize();
+		});
 
-<script src="js/functions.js"></script>
-<script src="js/map_init.js"></script>
-<script>
-$(document).on('pageshow', '#map-page', function () {
-	recalculateMapSize();
-//	setTimeout(recalculateMapSize,800);
-});
-function recalculateMapSize() {
-// Use full height in desktop browser: checked on MacOS with Firefox, Chrome and Safari
-	$(window).resize();
-// Avoid grey tiles in mobile browser: checked on iOS with Chrome and Safari
-	map.invalidateSize(false);
-};
-</script>
+		function recalculateMapSize() {
+			$(window).resize();
+			map.invalidateSize(false);
+		}
+	</script>
 </body>
 </html>

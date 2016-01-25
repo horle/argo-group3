@@ -12,11 +12,11 @@
         <param name="android-package" value="org.apache.cordova.deviceorientation.CompassListener" />
     </feature>
     <allow-intent href="market:*" />
-    <name>ArGO</name>
+    <name>Life Of Julius</name>
     <description>
-        Das ArGO-Projekt von Gruppe 3/C
+        Life Of Julius: Ein Geo-Discovery-Spiel für Kölner Archäologen im ersten Semester.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
+    <author email="argo@uni-koeln.de" href="http://argo.uni-koeln.de">
         ArGO, Gruppe 3/C
     </author>
     <content src="index.html" />

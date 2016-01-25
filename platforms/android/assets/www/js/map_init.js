@@ -1,10 +1,14 @@
 var map;
-var high_score = 0;
-var xp = 0;
+var smallWidth = false;
+var global_score = 0;
+var global_xp = 0;
 var level = 1;
 
 $(document).on('pageinit', "#map-page", function() {
 /*********MAP INITIALISING*********/
+
+	global_xp = readCookie("xp");
+	global_score = readCookie("score");
 
 	map = L.map('map').setView([50.939, 6.959], 15);
 
@@ -21,7 +25,7 @@ $(document).on('pageinit', "#map-page", function() {
             $("#detail-panel").panel('open');
             $("#btn-start-quiz").unbind('click');
             $("#btn-start-quiz").on('click', function() {
-                callQuiz(feat.properties.id)
+					invokeGamePage(feat.properties.id)
             });
 
         });
@@ -71,7 +75,7 @@ $(document).on('pageinit', "#map-page", function() {
 		img.attr({'src': feat.properties.picURL});
 	}
 	
-	renderBars();
+	renderIndicators(global_xp, global_score);
 /*******MAP INITIALISED********/
 
 });
