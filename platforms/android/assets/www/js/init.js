@@ -4,11 +4,55 @@ var global_score = 0;
 var global_xp = 0;
 var level = 1;
 
-$(document).on('pageinit', "#map-page", function() {
-/*********MAP INITIALISING*********/
+function introduction() {
 
+	$page = $('#story-page');
+
+	$pHead = $('#story-page-header');
+
+	$pHead.append( $('<h2>').html('Willkommen zu "Life of Julius"!') );
+	$pHead.append( $('<a>').attr({'data-role':'button',
+											'id':'story-page-skip',
+											'onclick':'startGame()',
+											'class':'ui-btn-right',
+											'data-icon':'forward'
+		}).text('Überspringen') );
+
+	$pCon = $('#story-page-content');
+		
+	$pCon.append( $('<img>').attr({'src':'img/julius_stand.jpg','width':'400px','id':'julius-bg'}) );
+	$pCon.append( $('<p>').attr({'id':'intro-text'}).text(story.introduction) );
+
+	$pHead.toolbar();
+	$pCon.enhanceWithin();
+	
+}
+
+function startGame() {
+
+	$('#story-page').remove();
+	$(':mobile-pagecontainer').pagecontainer('change', '#map-page');
+}
+
+$(document).on('pagebeforecreate', '#map-page', function() {
+
+	// first time playing?
+	if (readCookie("game") != 1){
+	
+		console.log("starting introduction");
+		introduction();
+		$(':mobile-pagecontainer').pagecontainer('change', '#story-page');
+	}
+
+/*********MAP INITIALISING*********/
+	setCookie("game", 1);
 	global_xp = readCookie("xp");
 	global_score = readCookie("score");
+
+	if (global_xp == "")
+		global_xp = 0;
+	if (global_score == "")
+		global_score = 0;
 
 	map = L.map('map').setView([50.939, 6.959], 15);
 
@@ -79,4 +123,3 @@ $(document).on('pageinit', "#map-page", function() {
 /*******MAP INITIALISED********/
 
 });
-

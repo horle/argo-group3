@@ -47,11 +47,22 @@
 	margin-right: 15px;
 }
 
-.circle strong {
-	position: absolute;
-	top: 13px;
-	width: 100%;
-	text-align: center;
+#xp-circle, #score-circle{
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+.circle-desc {
+	display: inline-block;
+	font-size: 14px;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+#score-circle, #xp-circle {
+	display: inline-block;
 }
 
 .progressbar {

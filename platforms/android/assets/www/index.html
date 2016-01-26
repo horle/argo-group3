@@ -14,7 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 
-	<title>ArGO</title>
+	<title>Life of Julius</title>
 </head>
 <body>
 <!-- MAP PAGE -->
@@ -49,6 +49,11 @@
 			<a id="btn-start-quiz" data-role="button" data-inline="true" class="ui-link ui-btn">Aufgaben</a>
 		</div>
 	</div>
+<!-- STORY PAGE -->
+	<div data-role="page" id="story-page" data-theme="b">
+		<div data-role="header" id="story-page-header"></div>
+		<div data-role="content" id="story-page-content"></div>
+	</div>
 <!-- GAME PAGE -->
 	<div data-role="page" id="game-page" data-theme="b"></div>
 
@@ -57,9 +62,10 @@
 	<script src="dist/thermo.js"></script>
 	<script src="js/geojson.js"></script>
 	<script src="js/quests.js"></script>
+	<script src="js/story.js"></script>
 	<script src="js/breakanoid.js"></script>
 	<script src="js/functions.js"></script>
-	<script src="js/map_init.js"></script>
+	<script src="js/init.js"></script>
 	<script>
 		$(document).on('pageshow', '#map-page', function() {
 			recalculateMapSize();
