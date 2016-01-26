@@ -53,7 +53,7 @@ var questions = [
 			"type": "estimate",
 			"answer":
 				{	"sol": 1500000,
-					"tolerances": [100000, 250000, 500000]	}
+					"tolerances": [0, 100000, 250000, 1000000]	}
 		},{
 			"text": "Mit welchem Gott verbindet man den Namen 'Dionysos'?",
 			"type": "mc",

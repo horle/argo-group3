@@ -8,7 +8,7 @@ function renderIndicators(xp, score){
 
 	function checkWidth() {
 		var windowsize = $window.width();
-		if (windowsize > 440) {
+		if (windowsize > 530) {
 			smallWidth = false;
 			initBars();
 			updateIndicators();
@@ -24,6 +24,14 @@ function renderIndicators(xp, score){
 	checkWidth();
 	// Bind event listener
 	$(window).resize(checkWidth);
+}
+
+//JUST FOR DEBUG
+function resetPoints(){
+
+	updateXP((-1)*global_xp);
+	updateScore((-1)*global_score);
+	updateIndicators();
 }
 
 // DEPRECATED, JUST FOR DEBUG
@@ -51,6 +59,27 @@ function invokeGamePage(id) {
 	}
 }
 
+function prepareBreakanoid() {
+
+	$page = $('#game-page').empty();	
+
+	$gHead = $('<div>').attr({'id':'game-header','data-role':'header'})
+		.appendTo($page);
+
+	$gHead.append( $('<h2>').text("Breakanoid") );
+	$gHead.append(	$('<a>').attr({'id':'game-close-btn',
+											'href':'#map-page',
+											'data-icon':'back',
+											'class':'ui-btn-left'
+		}).text("back") );
+
+	$gContent = $('<div>').attr({'id':'game-content','data-role':'content'})
+		.appendTo($page);
+	
+	$gContent.append( $("<canvas>", {'id':'breakanoid'}) );
+	$gContent.append( $("<a>", {'data-role':'button', 'onclick':'startBreakanoid()'}).text('Breakanoid!') );
+}
+
 function prepareQuiz(q) {
 
 	$page = $('#game-page').empty();
@@ -62,13 +91,13 @@ function prepareQuiz(q) {
 											'href':'#map-page',
 											'data-icon':'back',
 											'class':'ui-btn-left'
-		}).text("back") );
+		}).text("zurück") );
 
 	$gContent = $('<div>').attr({'id':'game-content','data-role':'content'})
 		.appendTo($page);
 
 	var type = q.type;
-	$gContent.append( $('<h3>').text(q.text) );
+	$gContent.append( $('<h3>').html(q.text) );
 
 // MULTIPLE CHOICE
 	if (type == "mc") {
@@ -88,7 +117,7 @@ function prepareQuiz(q) {
 										'value':q.answers[i].correct
 				}).appendTo($gRadioFieldSet);
 
-			$('<label>').attr({'for':'answer-'+i}).text(q.answers[i].text)
+			$('<label>').attr({'for':'answer-'+i}).html(q.answers[i].text)
 				.appendTo($gRadioFieldSet);
 		}
 
@@ -106,10 +135,50 @@ function prepareQuiz(q) {
 // ESTIMATE QUESTION
 	if (type == "estimate") {
 		
-		var solution = q.answer.sol;
-		var tolerances = q.answer.tolerances;
-//TODO
+		failCount = 0;
+		$solution = q.answer.sol;
+		$tolerances = q.answer.tolerances;
 
+		$('<input>').attr({	'type':'text',
+									'data-clear-btn':true,
+									'id':'q-input',
+									'placeholder':'Deine Antwort'
+			}).appendTo($gContent);
+
+		$checkBtn = $('<a>').attr({'data-role':'button'})
+			.text("Check!").click( function() {
+				
+					$qInput = $('#q-input');
+					$res = parseInt( $qInput.val() );
+
+					if ( isNaN( $res ) == true )
+						//no failcount necessary
+						popResultEstimate($solution, -1, 0, 0);
+					
+					else {
+						$diff = Math.abs( $res - $solution );
+						$toll = $tolerances.length;
+						$notInTol = true;
+
+						for (var i = 0; i < $toll; i++){
+
+							if ($diff <= $tolerances[i]) {
+								$notInTol = false;
+								console.log("DEBUG: estimate score: "+($toll -i)*20);
+								popResultEstimate($solution, $res, i, ($toll - i)*20);
+								updateScore( ($toll - i)*20 );
+								updateXP(30);
+								break;
+							}
+							if ($notInTol == false)
+								popResult(1, 0);
+						}
+					}
+			}).appendTo($gContent);
+
+		local_score_max = 30;	
+		$gHead.toolbar();
+		$gContent.enhanceWithin();
 	}
 
 // INPUT PROCESSING
@@ -121,16 +190,13 @@ function prepareQuiz(q) {
 									'placeholder':'Deine Antwort'
 			}).appendTo($gContent);
 		
-		function checkQuizInput() {
-
-			if ($('#q-input').val() == q.answer.sol) {
-//TODO
-				console.log("richtig");
-			}
-		}
-
-		$('<a>').attr({'data-role':'button','onclick':'checkQuizInput()'})
-			.text("Check!").appendTo($gContent);
+		$checkBtn = $('<a>').attr({'data-role':'button'})
+			.text("Check!").click( function() {
+				if ($('#q-input').val() == q.answer.sol) {
+					//TODO
+					console.log("richtig");
+				}
+			}).appendTo($gContent);
 	}
 }
 
@@ -147,18 +213,17 @@ function checkQuiz(){
 		res = res.val();
 	
 	if (res == "true"){
-		popResult(true, local_score);
+		popResult(0, local_score);
 		updateXP(local_score_max);
 		updateScore(local_score);
 		updateIndicators();
+		return true;
 	}
 	else{
 		failCount--;
-		// decision to sacrifice score points for xp
-		if ( popResult(false, local_score) == 1 ) {
-			
-			updateXP(local_score_max);
-			updateScore(local_score_max * (-2));
+		popResult(1, local_score);
+		
+		if (failCount == 0) {	
 			updateIndicators();
 		}
 	}
@@ -168,8 +233,56 @@ function checkQuiz(){
 function sacrificeScore(){
 
 	console.log("sacrificing!");
-	global_score += (-2) * local_score_max;
-	updateIndicators();
+	updateXP(local_score_max);
+	updateScore( (-2) * local_score_max );
+}
+
+function popResultEstimate(sol, res, tol, score) {
+
+	var title = "Schätzfrage";
+	var text = "Du hast "+res+" geschätzt. Die Lösung ist "+sol
+						+". Du liegst damit ";
+
+	switch(tol) {
+		case 0:
+			text += "genau richtig! Super! "+score+" Punkte gehen an dich!";break;
+		case 1: 
+			text += "ziemlich nah dran! "+score+" Punkte für dich!"; break;
+		case 2:
+			text += "nicht schlecht. "+score+" Punkte!"; break;
+		case 3:
+			text += "voll daneben. Leider nur "+score+" Punkte.";break;
+	}
+
+	$popUp = $("<div/>").popup({
+		theme: 'b',
+		overlayTheme: 'b',
+		transition: "pop",
+	});
+	
+	// input failed
+	if (res == -1) {
+		title = "Falsche Eingabe!";
+		$("<p/>", {'text':"Keine Zahl in der Eingabe. Bitte ein n eingeben mit n ∈ ℕ!"}).appendTo($popUp);
+		$("input[id=q-input]").val('');
+	}
+	else {
+		$("<p/>", {'text':text}).appendTo($popUp);
+
+		$popUp.on("popupafterclose", function() {
+			$(this).remove();
+			$(':mobile-pagecontainer').pagecontainer('change', '#map-page');
+		});
+	}
+
+	// create popup header
+	$("<div/>", {
+		'data-role': "header",
+		'data-theme': "b"
+	}).append( $("<h1>", {'text':title}) ).prependTo($popUp);
+
+	// display popup
+	$popUp.popup("open", {'overlayTheme': "b"}).trigger("create");
 }
 
 function popResult(res, local_score) {
@@ -177,67 +290,82 @@ function popResult(res, local_score) {
 	// score points to subtract, if fail
 	var sacrifice = local_score_max * 2;
 
+	// create popup container
 	$popUp = $("<div/>").popup({
 		theme: 'b',
 		overlayTheme: 'b',
 		transition: "pop",
 	});
-	if (res == true || failCount == 0)
+	
+	// correct answer or lost
+	if (res == 0 || failCount == 0)
 		$popUp.on("popupafterclose", function() {
 			$(this).remove();
 			$(':mobile-pagecontainer').pagecontainer('change', '#map-page');
 		});
 
-	var title = res == true ? "Yeah!" : "Oh weh!";
-	var text = res == true ? "Herzlichen Glückwunsch! Du hast die Frae richtig beantwortet und "
-		+ local_score + " von " + local_score_max + " Punkten erzielt!" : "Leider nicht korrekt.";
+	var title = "";
+	var text = "";
 
+	switch(res){
+		// correct
+		case 0:
+			title = "Yeah!";
+			text = "Herzlichen Glückwunsch! Du hast die Frage richtig beantwortet und "
+						+ local_score + " von " + local_score_max + " Punkten erzielt!";
+		
+			$("<p/>", {'text':text}).appendTo($popUp);
+			break;
+		// wrong
+		case 1:
+			title = "Oh weh!";
+			text = "Leider nicht korrekt.";
+			
+			// last try ..
+			if (failCount == 1) {
+
+				text += " Nur noch ein Versuch übrig.";
+				$("<p/>", { text : text }).appendTo($popUp);
+			}
+			// over!
+			else if (failCount == 0) {
+		
+				text += " Diese Aufgabe bringt dir keine Punkte. Du kannst, um deine Erfahrung für diese Aufgabe zu retten, "
+					+ sacrifice + " Punkte vom Punktestand opfern. Andernfalls geht auch diese verloren. Möchtest du Punkte opfern?"
+	
+				$("<p/>", { 'text':text }).appendTo($popUp);
+				$popUp.attr("data-dismissable", false);
+				
+				$("<a/>", {	'text':"Nein!",
+								'data-role':"button",
+								'data-rel':'back'
+					}).appendTo($popUp);
+	
+				$("<a/>", {	'text':"OK!",
+								"onclick":"sacrificeScore()",
+								'data-role':"button",
+								'data-rel':'back'
+					}).appendTo($popUp);
+	
+			}
+			// wrong, but tries left
+			else {
+	
+				text += " Nochmal probieren! Noch "+failCount+" Versuche übrig."
+				$("<p/>", {'text': text }).appendTo($popUp);
+			}
+
+			break;
+	}
+
+	// create popup header
 	$("<div/>", {
 		'data-role': "header",
 		'data-theme': "b"
-	}).append($("<h1>", {text:title})).appendTo($popUp);
+	}).append( $("<h1>", {'text':title}) ).prependTo($popUp);
 
-	// answer wrong	
-	if (res == false) {
-		
-		// last try ..
-		if (failCount == 1) {
-
-			text += " Nur noch ein Versuch übrig.";
-			$("<p/>", { text : text }).appendTo($popUp);
-		}
-		// over!
-		else if (failCount == 0) {
-	
-			text += " Diese Aufgabe bringt dir keine Punkte. Du kannst, um deine Erfahrung für diese Aufgabe zu retten, "
-				+ sacrifice + " Punkte vom Highscore opfern. Möchtest du das?"
-
-			$("<p/>", { text : text }).appendTo($popUp);
-			$popUp.attr("data-dismissable", false);
-			
-			$("<a/>", {	text:"Nein!",
-							'data-role':"button",
-							"data-rel":"back"
-				}).appendTo($popUp);
-
-			$("<a/>", {	text:"OK!",
-							"onClick":"sacrificeScore()",
-							'data-role':"button",
-				}).appendTo($popUp);
-
-		}
-		// wrong, but tries left
-		else {
-
-			text += " Nochmal versuchen! Noch "+failCount+" Versuche übrig."
-			$("<p/>", { text : text }).appendTo($popUp);
-		}
-	// correct answer
-	} else
-		$("<p/>", { text : text }).appendTo($popUp);
-
-	// in each case: display popup
-	$popUp.popup("open", {overlayTheme: "b"}).trigger("create");
+	// display popup
+	$popUp.popup("open", {'overlayTheme': "b"}).trigger("create");
 }
 
 function updateIndicators() {
@@ -254,7 +382,7 @@ function updateIndicators() {
 //TODO: LEVELSTUFEN
 function updateXP(xp) {
 	
-	global_xp += xp;
+	global_xp += parseInt(xp);
 
 	setCookie("xp", global_xp);
 
@@ -266,7 +394,10 @@ function updateXP(xp) {
 
 function updateScore(score) {
 
-	global_score += score;
+	global_score += parseInt(score);
+
+	if (global_score < 0)
+		global_score = 0;
 	
 	setCookie("score", global_score);
 	
@@ -274,12 +405,6 @@ function updateScore(score) {
 		setScoreBar(global_score);
 	else
 		setScoreCircle(global_score);
-}
-
-function prepareBreakanoid() {
-	
-	$("#game-content").html("<canvas id='breakanoid'></canvas>");
-	startBreakanoid();
 }
 
 function initBars(){
@@ -304,22 +429,24 @@ function initBars(){
 function initCircles(){
 
 	console.log("circles initialising");
-
+	
 	//reset class attr
-	$("#xp-container").removeClass("progressbar tiny-green").html("<div id='xp-circle'></div>");
-	$("#score-container").removeClass("progressbar tiny-green").html("<div id='score-circle'></div>");
-	//getBarValues(); needs to be implemented with cookies
+	$xpCon = $("#xp-container").empty();
+	$scoreCon = $("#score-container").empty();
+
+	$xpCon.append( $("<div>", {'class':'circle-desc'}).text('XP (in %)') ).append( $("<div>", {'id':'xp-circle'}) );
+	$scoreCon.append( $("<div>", {'class':'circle-desc'}).text('Punkte') ).append( $("<div>", {'id':'score-circle'}) );
 
 	// circle js code
 	var score_c = $('#score-circle').circleProgress({
-		value: 0,
-		size: 40,
+		value: 100,
+		size: 35,
 		fill: { color: '#ff1e41' } 
 	});
 
 	var xp_c = $('#xp-circle').circleProgress({
-		value: 0,
-		size: 40,
+		value: global_xp/100,
+		size: 35,
 		fill: { color: '#55ff11' }
 	});
 
@@ -327,7 +454,7 @@ function initCircles(){
 		var obj = $(this).data('circle-progress'),
 			ctx = obj.ctx,
 			s = obj.size,
-			sv = (100 * v).toFixed(),
+			sv = (global_score * v).toFixed(),
 			fill = obj.arcFill;
 	
 		ctx.save();
@@ -342,7 +469,7 @@ function initCircles(){
       var obj = $(this).data('circle-progress'),
          ctx = obj.ctx,
          s = obj.size,
-         sv = (100 * v).toFixed(),
+         sv = (global_xp * v).toFixed(),
          fill = obj.arcFill;
 
       ctx.save();
@@ -355,33 +482,20 @@ function initCircles(){
    });
 }
 
-function setScoreCircle(x) {
+function setScoreCircle(x) {$('#score-circle').circleProgress('value', 100);}
 
-	$('#score-circle').circleProgress({value: x});
-}
-
-function setXPCircle(x) {
-
-	$('#xp-circle').circleProgress({value: x});
-}
+function setXPCircle(x) {$('#xp-circle').circleProgress('value', x/100);}
 
 function setXPBar(x){
 
 	var progressBarWidth = x * $('#xp-bar').width() / 100;
-	$('#xp-bar').find('div').animate({ width: progressBarWidth }, 500).html(x + "% ");
+	$('#xp-bar').find('div').animate({ width: progressBarWidth }, 500).html(x + "%");
 }
-function getXPBar(){
 
-	return $('#xp-circle').circleProgress('value');
-}
 function setScoreBar(x){
 
-	var progressBarWidth = x * $('#score-bar').width() / 100;
-	$('#score-bar').find('div').animate({ width: progressBarWidth }, 500).html(x + "% ");
-}
-function getScoreBar(){
-
-	return $('#score-circle').circleProgress('value');
+	var progressBarWidth = $('#score-bar').width();
+	$('#score-bar').find('div').animate({ width: progressBarWidth }, 500).html(x);
 }
 
 function setCookie(name, value) {
