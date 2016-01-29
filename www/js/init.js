@@ -84,7 +84,8 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
 		maxZoom: 20,
 		id: 'mapbox.pirates',
-		accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ'
+		accessToken: "pk.eyJ1IjoibGlmZW9mbHVsaXVzIiwiYSI6ImNpanptc25sMDAwNnJ2cGx6bjV2ajBwcTAifQ.FCMhdEJ3A9aZH2houDa7rw"
+	//'pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ'
 	}).addTo(map);
 		 
 	/*
