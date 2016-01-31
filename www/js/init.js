@@ -1,8 +1,8 @@
 var map;
-var smallWidth = false;
-var global_score = 0;
-var global_xp = 0;
-var level = 1;
+var smallWidth = false; //bool to indicate mobile device
+var globalScore = 0;
+var globalXP = 0;
+var currentLevel = 0;
 
 function introduction() {
 
@@ -20,7 +20,7 @@ function introduction() {
 
 	$pCon = $('#story-page-content');
 		
-	$pCon.append( $('<img>').attr({'src':'img/julius_stand.jpg','width':'400px','id':'julius-bg'}) );
+	$pCon.append( $('<img>').attr({'src':'img/julius_stand.png','width':'300px','id':'julius'}) );
 	$pCon.append( $('<p>').attr({'id':'intro-text'}).text(story.introduction) );
 
 	$pHead.toolbar();
@@ -30,7 +30,7 @@ function introduction() {
 
 function startGame() {
 
-	$('#story-page').remove();
+	$('#story-page').hide();
 	$(':mobile-pagecontainer').pagecontainer('change', '#map-page');
 }
 
@@ -39,49 +39,59 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 	// first time playing?
 	if (readCookie("game") != 1){
 	
-		console.log("starting introduction");
 		introduction();
 		$(':mobile-pagecontainer').pagecontainer('change', '#story-page');
+		setCookie("level", 0);
 	}
 
 /*********MAP INITIALISING*********/
 	setCookie("game", 1);
-	global_xp = readCookie("xp");
-	global_score = readCookie("score");
+	wonGame = readCookie("won") == 1 ? true : false;
+	currentLevel = readCookie("level");
+	globalXP = readCookie("xp");
+	globalScore = readCookie("score");
 
-	if (global_xp == "")
-		global_xp = 0;
-	if (global_score == "")
-		global_score = 0;
+	if (globalXP == "")
+		globalXP = 0;
+	if (globalScore == "")
+		globalScore = 0;
 
 	map = L.map('map').setView([50.939, 6.959], 15);
 
-    function addMarker(i) {
+   function addMarker(i) {
 
-        var feat = myPlaces.features[i],
-            marker = L.marker(feat.geometry.coordinates, {icon: spqrIcon});
+		var feat = myPlaces.features[i];
+		var marker = L.marker(feat.geometry.coordinates, {icon: spqrIcon});
 
-        marker.on('click', function(e){
+		marker.on('click', function(e){
 
-            map.setView(e.latlng, 15, {animate: true});
-            setContent(feat);
+			map.setView(e.latlng, 15, {animate: true});
 
-            $("#detail-panel").panel('open');
-            $("#btn-start-quiz").unbind('click');
-            $("#btn-start-quiz").on('click', function() {
-					invokeGamePage(feat.properties.id)
-            });
+			if(wonGame == false){
+				$("#btn-start-quiz").show();
+				setStoryContent(feat);
+			}
+			else{
+				setDetailContent(feat);
+				$("#btn-start-quiz").hide();
+			}
 
-        });
+			$("#detail-panel").panel('open');
+			$("#btn-start-quiz").unbind('click');
+			$("#btn-start-quiz").on('click', function() {
+				invokeGamePage(feat.properties.id)
+			});
 
-        marker.addTo(map).bindPopup("<b>"+feat.properties.name+"</b>");
-    }
+		});
+
+		marker.addTo(map).bindPopup("<b>"+feat.properties.name+"</b>");
+	}
 
 	//lustig!
 	// https://www.mapbox.com/developers/api/maps/#mapids
 		 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		attribution: '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://mapbox.com">Mapbox</a>',
 		maxZoom: 20,
 		id: 'mapbox.pirates',
 		accessToken: "pk.eyJ1IjoibGlmZW9mbHVsaXVzIiwiYSI6ImNpanptc25sMDAwNnJ2cGx6bjV2ajBwcTAifQ.FCMhdEJ3A9aZH2houDa7rw"
@@ -114,13 +124,19 @@ $(document).on('pagebeforecreate', '#map-page', function() {
         addMarker(i);
 	}
 
-	function setContent(feat) {
+	function setDetailContent(feat) {
 		header.html(feat.properties.name);
 		content.html(feat.properties.popupContent);
 		img.attr({'src': feat.properties.picURL});
 	}
 	
-	renderIndicators(global_xp, global_score);
+	function setStoryContent(feat) {
+		header.html(feat.properties.name);
+		content.text(questions[feat.properties.id].intro);
+		img.attr({'src': feat.properties.picURL});
+	}
+
+	renderIndicators(globalXP, globalScore);
 /*******MAP INITIALISED********/
 
 });

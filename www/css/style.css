@@ -85,8 +85,35 @@
 	text-align: center;
 }
 
-#bar-container p{
+#xp-percent {
+	z-index: 10;
+	text-align: center;
+	font-size: 14px;
+	position: absolute;
+	top: 2px;
+	width: inherit;
+	margin: 0;
+	height: 16px;
+}
+
+#score-container > p, #xp-container >p {
 	font-size: 12px;
 	margin: 0;
 	padding-left: 5px;
+}
+#intro-text{
+	margin: 10px 20px 10px 20px;
+}
+#julius {
+	display: block;
+   margin-left: auto;
+   margin-right: auto;
+	width: 200px;
+}
+.ui-popup-container p{
+	margin: 16px;
+	max-width: 600px;
+}
+.ui-header .ui-title, .ui-footer .ui-title {
+	margin: 0 10%;
 }

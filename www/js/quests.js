@@ -1,19 +1,10 @@
 var questions = [
 {
 	'object': "nordtor",
+	'intro':'Nach einer langen und beschwerlichen Reise kommst du am Nordtor an. Noch bevor du die Stadt betrittst, überrumpelt dein Bekannter Gaius Publius dich mit einer Frage:',
+	'outro':'Nachdem du ihm die Fragen beantwortet hast, zeigt er dir auch den Rest der Befestigungsanlagen seiner Stadt.',
 	"quests": [
 		{
-			"text": "Wie hie&szlig; der erste r&ouml;mische Kaiser?",
-			"type": "mc",
-			"answers": [
-				{	"text": "Nero",
-					"correct": false	},
-				{	"text": "Augustus",
-					"correct": true	},
-				{	"text": "Octavian",
-					"correct": false	}
-			]
-		},{
 			"text": "Wann wurde das Nordtor errichtet?",
 			"type": "mc",
 			"answers": [
@@ -24,7 +15,7 @@ var questions = [
 				{	"text": "3. JH n. Chr.",
 					"correct": false			}
 			]
-		},{ //HIERFUER NOCH EINGABE IMPLEMENTIEREN
+		},{
 			"text": "Nenne den Namen des bekannten Stadttores von Trier!",
 			"type": "input",
 			"answer": "Porta Nigra"
@@ -47,8 +38,10 @@ var questions = [
 	]
 },{
 	"object": "dionysos",
+	'intro':'Du schlägst vor, euch erst einmal bei Gaius Publius in seiner nahe gelegenen Stadtvilla zu stärken, dessen Mosaik über Kölns Grenzen hinaus bekannt ist. Bevor ihr euch jedoch ins Triclinium begebt, hat Gaius noch einige Fragen …',
+	'outro':'Mit Leichtigkeit beantwortetest du alle Fragen, da du schon viel über das Dionysos-Mosaik gehört hast.',
 	"quests": [
-		{// SCHAETZFRAGE IMPLEMENTIEREN
+		{
 			"text": "Sch&auml;tze! Wie viele Steinchen (<i>tesserae</i>) wurden f&uuml;r das K&ouml;lner Dionysos-Mosaik in etwa aufgewendet?",
 			"type": "estimate",
 			"answer":
@@ -91,6 +84,8 @@ var questions = [
 	]
 },{
 	"object": "deutz",
+	'intro':'Früh morgens am darauffolgenden Tag ist das Kastell Divicia eure erste Station. Dort ist gerade der alltägliche Morgenapell. Der dortige Lagerkommandant nimmt euch beide in Empfang und will in einem sofortigem Rapport folgenden Fragen beantwortet haben …',
+	'outro':'Der Lagerkommandant ist voll zufrieden mit dir und entlässt euch zur weiteren Erkundung Kölns.',
 	"quests": [
 		{
 			"text": "In welchem K&ouml;lner Stadtteil befindet sich das Kastell Divitia? (Antwort: K&ouml;ln-...)",
@@ -125,7 +120,7 @@ var questions = [
 				{	"text": "in der Provinz",
 					"correct": false			},
 				{	"text": "in Grenzn&auml;he",
-					"correct": false			},
+					"correct": true			},
 				{	"text": "im Barbaricum",
 					"correct": false			}
 			]	
@@ -133,6 +128,8 @@ var questions = [
 	]
 },{
 	"object": "kapitol",
+	'intro':'Das Kapitol soll das nächste Ziel eurer Stadtführung sein. Hier spiegeln sich die Macht Roms und die Fähigkeiten seiner Baumeister wieder. Gaius weiß alles über dieses Bauwerk, denn er kommt jeden Tag dort vorbei, doch wie steht es um dich, Julius?',
+	'outro':'Gaius ist überrascht von deinem Wissen. Ihr begebt euch nun zur nächsten Station.',
 	"quests": [
 		{
 			"text": "Welche Gottheiten wurden im Kapitolstempel verehrt?",
@@ -177,6 +174,8 @@ var questions = [
 	]
 },{
 	"object": "praetorium",
+	'intro':'Das nächste Ziel ist das Kölner Praetorium. Bevor du mit Gaius das mächtige Gebäude betretest, hast du allerdings noch grundlegende Fragen.',
+	'outro':'Gaius ist stolz auf seinen Schützling und prophezeit dir eine grandiose Karriere beim römischen Staat.',
 	"quests": [
 		{
 			"text": "Das Praetorium im antiken K&ouml;ln war der Amtssitz der/des r&ouml;mischen ...",
@@ -221,6 +220,8 @@ var questions = [
 	]
 },{
 	"object": "ubier",
+	'intro':'Ein großer Wunsch von dir ist es, das berühmte Kölner Ubiermonument zu besichtigen, deine Freunde waren bereits dort und waren begeistert. Gaius testet dein Wissen, ob deine Freunde dir auch keine Unwahrheiten erzählt haben.',
+	'outro':'Dass deine Freunde dir keine Lügen erzählen, war ja eigentlich klar.',
 	"quests": [
 		{
 			"text": "Aus welchem Material besteht das Monument?",
@@ -278,6 +279,8 @@ var questions = [
 	]
 },{
 	"object": "roemerturm",
+	'intro':'Als ihr an der Nordwest-Ecke der Stadtmauer ankommt, fallen dir weitere Fragen ein:',
+	'outro':'Wie gut, dass du dir diese Fragen selbst beantworten konntest.',
 	"quests": [
 		{
 			"text": "Vom Turm aus kann man bis &uuml;ber den Rhein, und damit die Grenze des r&ouml;mischen Reiches sehen. Wie wurde das Land hinter dem Rhein von den R&ouml;mern genannt?",

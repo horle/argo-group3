@@ -5,12 +5,12 @@ var story = {
 			'id':0,
 			'name':'Militärtribun',
 			'xp': 50,
-			'levelup':''
+			'levelup':'Die erste Hürde wäre gemeistert: Du bist zum Militärtribun einer in Germanien stationierten Legion ernannt worden. Zwar liegt die eigentliche Befehlsgewalt bei den kampferfahrenen Kommandanten, aber du und deine fünf Kollegen tragt die Verantwortung für Verwaltung und Organisation. Nutze diese Zeit, um Erfahrungen zu sammeln!'
 		},{
 			'id':1,
 			'name':'Quaestor',
 			'xp': 60,
-			'levelup':''
+			'levelup':'Du hast einen scharfen Verstand, jetzt ist es Zeit ihn zu benutzen. Du unterstützt Statthalter in fernen Provinzen, oder vielleicht sogar den Konsul. Die meiste Zeit wirst du mit Finanzen verbringen, Steuern eintreiben, oder Stadt- und Provinzkassen verwalten. Ein eher langweiliges Amt, aber von höchster Wichtigkeit für den geregelten Ablauf des Staatswesens.'
 		},{
 			'id':2,
 			'name':'Aedil',
@@ -25,7 +25,7 @@ var story = {
 			'id':4,
 			'name':'Legionskommandant',
 			'xp': 120,
-			'levelup':'Julius – die Armee steht dir zu Diensten! Führe uns in die Schlacht, führe uns zu Reichtum und lass den Adler Roms nie in die Hände der Barbaren fallen! Du bist nun der höchste Herrführer dieser Provinz und wir stehen dir zur Seite. Wir folgen deinem Befehl bis in den Tod – für Rom!'
+			'levelup':'Julius – die Armee steht dir zu Diensten! Führe uns in die Schlacht, führe uns zu Reichtum und lass den Adler Roms nie in die Hände der Barbaren fallen! Du bist nun der höchste Heerführer dieser Provinz und wir stehen dir zur Seite. Wir folgen deinem Befehl bis in den Tod – für Rom!'
 		},{
 			'id':5,
 			'name':'Statthalter',
@@ -35,7 +35,7 @@ var story = {
 			'id':6,
 			'name':'Konsul',
 			'xp': 200,
-			'levelup':''
+			'levelup':'Oh ehrenwerter Julius! Du hast die Spitze unserer Republik erreicht! Über dir stehen nur die Götter, doch du bist ihnen beinahe ebenbürtig. Glorreicher Julius – wir verneigen uns vor dir!'
 		}
 	]
 }

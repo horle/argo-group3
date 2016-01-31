@@ -1,13 +1,21 @@
 function startBreakanoid() {
 
+	var id;
+	stopBreakanoid = false;
+
 	var canvas=document.getElementById("breakanoid");
 	var ctx = canvas.getContext("2d");
+	ctx.canvas.width = window.innerWidth-50;
+	ctx.canvas.height = window.innerHeight-50;
+
+	var speedX = 5;// canvas.width/100;
+	var speedY = 5;//canvas.height/100;
 
 	var ballRadius = 10;
 	var x = canvas.width/2;
 	var y = canvas.height-30;
-	var dx = 2;
-	var dy = -2;
+	var dx = speedX;//2;
+	var dy = speedY;//-2;
 
 	var paddleHeight = 10;
 	var paddleWidth = 75;
@@ -16,13 +24,13 @@ function startBreakanoid() {
 	var rightPressed = false;
 	var leftPressed = false;
 
-	var brickRowCount = 5;
-	var brickColumnCount = 3;
 	var brickWidth = 75;
 	var brickHeight = 20;
 	var brickPadding = 10;
-	var brickOffsetTop = 30;
-	var brickOffsetLeft = 30;
+	var brickOffsetTop = 50;//30;
+	var brickOffsetLeft = 50;//30;
+	var brickRowCount = canvas.width / (brickWidth + brickOffsetLeft)//5;
+	var brickColumnCount = canvas.height / (brickHeight + brickOffsetTop)//3;
 
 	var score = 0;
 	var lives = 3;
@@ -31,7 +39,7 @@ function startBreakanoid() {
 	for(c=0; c<brickColumnCount; c++) {
 			  bricks[c] = [];
 			  for(r=0; r<brickRowCount; r++) {
-						 bricks[c][r] = { x: 0, y: 0, status: 1 };
+						 bricks[c][r] = { x: 0, y: 0, status: Math.floor(Math.random()*2) };
 			  }
 	}
 
@@ -70,13 +78,14 @@ function startBreakanoid() {
 						 for(r=0; r<brickRowCount; r++) {
 									var b = bricks[c][r];
 									if(b.status == 1) {
-											  if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
+											  if(x+ballRadius > b.x && x-ballRadius < b.x+brickWidth && y+ballRadius > b.y && y-ballRadius < b.y+brickHeight) {
 														 dy = -dy;
 														 b.status = 0;
 														 score++;
 														 if(score == brickRowCount*brickColumnCount) {
 																	alert("Julius Wins!");
-																	document.location.reload();
+//																	document.location.reload();
+																	dx = 0; dy = 0;
 														 }
 											  }
 									}
@@ -126,6 +135,11 @@ function startBreakanoid() {
 			  ctx.fillText("Lives: "+lives, canvas.width-65, 20);
 	}
 	function draw() {
+			  if(stopBreakanoid == true){
+					window.cancelAnimationFrame(id);
+					return;
+				}
+
 			  ctx.clearRect(0, 0, canvas.width, canvas.height);
 			  drawBricks();
 			  drawBall();
@@ -141,7 +155,7 @@ function startBreakanoid() {
 			  if(y + dy < ballRadius) {
 						 dy = -dy;
 			  }
-			  else if(y + dy > canvas.height-ballRadius) {
+			  else if(y + dy > canvas.height-1.5*ballRadius) {
 						 if(x > paddleX && x < paddleX + paddleWidth) {
 									dy = -dy;
 						 }
@@ -149,13 +163,15 @@ function startBreakanoid() {
 									lives--;
 									if(!lives) {
 											  alert("Barbar Wins!");
-											  document.location.reload();
+//											  document.location.reload();
+												dx = 0; dy = 0;
 									}
+									// neue runde nach fail
 									else {
 											  x = canvas.width/2;
 											  y = canvas.height-30;
-											  dx = 3;
-											  dy = -3;
+											  dx = speedX;//3;
+											  dy = -speedY;//-3;
 											  paddleX = (canvas.width-paddleWidth)/2;
 									}
 						 }
@@ -171,7 +187,8 @@ function startBreakanoid() {
 
 			  x += dx;
 			  y += dy;
-			  requestAnimationFrame(draw);
+			  if (stopBreakanoid == false)
+				  id = requestAnimationFrame(draw);
 	}
 	draw();
 }
