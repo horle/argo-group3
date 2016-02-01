@@ -186,9 +186,9 @@ function prepareQuiz(q, outro) {
 								updateXP(30);
 								break;
 							}
-							if ($notInTol == true)
-								popResult(1, 0);
 						}
+						if ($notInTol == true)
+							popResult(1, 0);
 					}
 			}.bind(outro) ).appendTo($gContent);
 
@@ -362,6 +362,7 @@ function popResult(res, localScore, outro) {
 
 				text += " Nur noch ein Versuch übrig.";
 				$("<p/>", {'text':text}).appendTo($pCon);
+				$pCon.append( $("<img>",{'src':'img/wrong.gif','id':'gif'}) );
 			}
 			// over!
 			else if (failCount == 0) {
