@@ -48,8 +48,9 @@ function storyNext() {
 	$pCon.append( $('<a>',{
 		'data-role':'button',
 		'id':'story-page-skip',
-		'onclick':'startGame()',
-		'data-icon':'forward'
+		'data-icon':'arrow-r',
+		'data-iconpos':'right',
+		'onclick':'startGame()'
 	}).text('Los!') );
 
 	$pCon.enhanceWithin();
