@@ -1,7 +1,7 @@
 ## Life of Julius
 Das ArGO-Projekt der Gruppe 3/C. 
 
-Die aktuelle APK liegt unter [platforms/android/julius.apk](raw/master/platforms/android/julius.apk).
+Die aktuelle APK liegt unter [platforms/android/julius.apk](https://github.com/horle/argo-group3/raw/master/platforms/android/julius.apk).
 
 Nutzt:
 * [Apache Cordova](https://cordova.apache.org/)
