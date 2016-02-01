@@ -418,7 +418,6 @@ function updateIndicators() {
 		setScoreBar(globalScore);
 	}
 	else {
-//TODO: levelanzeige mobil
 		setXPCircle(globalXP);
 		setScoreCircle(globalScore);
 	}
@@ -426,10 +425,10 @@ function updateIndicators() {
 
 function updateXP(xp) {
 
-	localXP = parseInt(xp);
+	var localXP = parseInt(xp);
 	if (globalXP + localXP >= story.levels[currentLevel].xp) {
 
-		globalXP = (globalXP + localXP) % story.levels[currentLevel].xp;
+		globalXP = (globalXP + localXP) - story.levels[currentLevel].xp;
 		newLevel = updateLevel();
 	}
 	else	

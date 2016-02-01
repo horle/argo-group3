@@ -173,7 +173,7 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 		sum += globalXP;
 		
 		if(currentLevel == story.levels.length -1)
-			nextRank = null;
+			nextRank = "Konsul";
 		else
 			nextRank = story.levels[currentLevel+1].name;
 

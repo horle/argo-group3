@@ -22,8 +22,13 @@ function thermometer(goalAmount, progressAmount, rank, nextAmount, nextRank, ani
     nextPercentage =  Math.min( Math.round(nextAmount / goalAmount * 1000) / 10, 100); //make sure we have 1 decimal point
 
     //let's format the numbers and put them back in the DOM
-    $goal.find(".amount").text("Konsul ("+goalAmount+" XP)" );
-	 $next.find(".amount").text(nextRank+" ("+nextAmount+" XP)");
+	 // near to konsul?
+	 if(goalAmount - progressAmount > 80)
+	    $goal.find(".amount").text("Konsul ("+goalAmount+" XP)" );
+	 
+	 if(goalAmount - progressAmount > 20)
+		 $next.find(".amount").text(nextRank+" ("+nextAmount+" XP)");
+
     $progress.find(".amount").text( rank+" (" + progressAmount +" XP)" );
 
 
