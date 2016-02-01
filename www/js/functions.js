@@ -485,7 +485,7 @@ function showLevelupPopup() {
 		$popUp.popup({dismissible:false});
 		title = "Herzlichen Glückwunsch!";
 		text = story.levels[currentLevel].levelup; 
-		var text2 = 'Du hast "Life of Julius" gewonnen. Wenn du willst, kannst du von Neuem anfangen. Dein Highscore beträgt: '+globalScore+' Punkte! Spiel neu starten?';
+		var text2 = 'Du hast "Life of Julius" gewonnen. Dein Highscore beträgt: '+globalScore+' Punkte! Wenn du willst, kannst du von Neuem anfangen, du kannst aber auch nochmal alle Orte besuchen. Dort findest du jetzt interessante Details zum jeweiligen Objekt. Spiel neu starten?';
 		$("<p>", {'text': text}).appendTo($pCon);
 		$("<p>", {'text': text2}).appendTo($pCon);
 		$("<a/>", {	'text':"Nein!",
