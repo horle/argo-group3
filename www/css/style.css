@@ -129,3 +129,9 @@
 	margin: 15px auto;
 	display: block
 }
+#reset-btn{
+	position: absolute;
+	bottom: 0;
+	right: 10px;
+	left: 10px;
+}

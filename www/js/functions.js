@@ -35,7 +35,9 @@ function renderIndicators(xp, score){
 
 function resetPoints(){
 
+	$('#level-panel').panel("close");
 	updateLevel(-1);
+	$('#reset-btn').remove();
 	setCookie("won",0);
 	updateXP((-1)*globalXP);
 	updateScore((-1)*globalScore);
@@ -428,7 +430,7 @@ function updateXP(xp) {
 	var localXP = parseInt(xp);
 	if (globalXP + localXP >= story.levels[currentLevel].xp) {
 
-		globalXP = (parseInt(globalXP) + localXP)) - story.levels[currentLevel].xp;
+		globalXP = (parseInt(globalXP)) + localXP - story.levels[currentLevel].xp;
 		newLevel = updateLevel();
 	}
 	else	
@@ -491,6 +493,7 @@ function showLevelupPopup() {
 		$("<a/>", {	'text':"Nein!",
 						'data-role':"button",
 						'data-inline':'true',
+						'onclick':'addResetButton()',
 						'data-rel':'back'
 			}).appendTo($pCon);
 	
@@ -510,6 +513,18 @@ function showLevelupPopup() {
 
 	// display popup
 	$popUp.enhanceWithin().popup("open", {'overlayTheme': "b"});
+}
+
+function addResetButton() {
+
+	$btn = $('<a>',{
+		'text':"Spiel neustarten!",
+		"onclick":"resetPoints()",
+		'id':'reset-btn',
+		'data-role':"button",
+		'data-rel':'close'
+	}).insertAfter( $('#thermometer') );
+	$btn.parent().enhanceWithin();
 }
 
 function updateScore(score) {
@@ -610,6 +625,9 @@ function setXPCircle(x) {
 function setXPBar(x){
 
 	var percentage = (x / story.levels[currentLevel].xp);
+	if (story.levels[currentLevel].xp == 0)
+		percentage = 1;
+
 	var progressBarWidth = percentage * $('#xp-bar').width();
 	$('#xp-bar').find('div').first().animate({ width: progressBarWidth }, 500);
 	$('#xp-percent').html(Math.round(percentage*100) + "%");

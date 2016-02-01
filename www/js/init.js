@@ -11,22 +11,26 @@ function introduction() {
 	$pHead = $('#story-page-header');
 
 	$pHead.append( $('<h2>').html('Willkommen zu "Life of Julius"!') );
-	$pHead.append( $('<a>').attr({'data-role':'button',
-											'id':'story-page-skip',
-											'onclick':'startGame()',
-											'class':'ui-btn-right',
-											'data-icon':'forward'
-		}).text('Überspringen') );
+	$pHead.append( $('<a>',{
+		'data-role':'button',
+		'id':'story-page-skip',
+		'onclick':'startGame()',
+		'class':'ui-btn-right',
+		'data-iconpos':'right',
+		'data-icon':'forward'
+	}).text('Überspringen') );
 
 	$pCon = $('#story-page-content');
 		
-	$pCon.append( $('<img>').attr({'src':'img/julius_stand.png','width':'300px','id':'julius'}) );
-	$pCon.append( $('<p>').attr({'id':'intro-text'}).text(story.introduction) );
-	$pCon.append( $('<a>').attr({'data-role':'button',
-											'id':'story-page-skip',
-											'onclick':'storyNext()',
-											'data-icon':'forward'
-		}).text('weiter ...') );
+	$pCon.append( $('<img>',{'src':'img/julius_stand.png','width':'300px','id':'julius'}) );
+	$pCon.append( $('<p>',{'id':'intro-text'}).text(story.introduction) );
+	$pCon.append( $('<a>',{
+		'data-role':'button',
+		'id':'story-page-skip',
+		'onclick':'storyNext()',
+		'data-icon':'arrow-r',
+		'data-iconpos':'right'
+	}).text('weiter ...') );
 
 	$pHead.toolbar();
 	$pCon.enhanceWithin();
@@ -39,13 +43,14 @@ function storyNext() {
 
 	$intro = 'Die Entwickler von "Life of Julius" wünschen Dir viel Spaß beim Spielen!';
 	
-	$pCon.append( $('<p>').attr({'id':'intro-text'}).text(story.levels[0].levelup) );
-	$pCon.append( $('<p>').attr({'id':'intro-text'}).text($intro) );
-	$pCon.append( $('<a>').attr({'data-role':'button',
-											'id':'story-page-skip',
-											'onclick':'startGame()',
-											'data-icon':'forward'
-		}).text('Los!') );
+	$pCon.append( $('<p>',{'id':'intro-text'}).text(story.levels[0].levelup) );
+	$pCon.append( $('<p>',{'id':'intro-text'}).text($intro) );
+	$pCon.append( $('<a>',{
+		'data-role':'button',
+		'id':'story-page-skip',
+		'onclick':'startGame()',
+		'data-icon':'forward'
+	}).text('Los!') );
 
 	$pCon.enhanceWithin();
 }
@@ -66,6 +71,9 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 		introduction();
 		$(':mobile-pagecontainer').pagecontainer('change', '#story-page');
 		setCookie("level", 0);
+		setCookie("xp", 0);
+		setCookie("score",0);
+
 	}
 
 /*********MAP INITIALISING*********/
@@ -162,6 +170,8 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 	}
 
 	renderIndicators(globalXP, globalScore);
+	if(wonGame == true)
+		addResetButton();
 
 	$('#level-panel').on("panelbeforeopen", function (){
 
@@ -176,8 +186,9 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 		next = sum + story.levels[currentLevel].xp;
 		sum += globalXP;
 		
-		if(currentLevel == story.levels.length -1)
+		if(currentLevel == story.levels.length -1){
 			nextRank = "Konsul";
+		}
 		else
 			nextRank = story.levels[currentLevel+1].name;
 
