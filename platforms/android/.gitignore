@@ -8,7 +8,9 @@ local.properties
 ant-build
 ant-gen
 # Eclipse builds
+bin
 gen
+assets
 out
 # Gradle builds
 /build

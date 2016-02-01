@@ -126,7 +126,6 @@
 	margin: 0 10%;
 }
 #gif{
-	margin-left: auto;
-	margin-right: auto;
+	margin: 15px auto;
 	display: block
 }

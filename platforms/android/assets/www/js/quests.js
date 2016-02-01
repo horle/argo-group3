@@ -4,7 +4,7 @@ var questions = [
 	'intro':'Nach einer langen und beschwerlichen Reise kommst du am Nordtor an. Noch bevor du die Stadt betrittst, überrumpelt dein Bekannter Gaius Publius dich mit einer Frage:',
 	'outro':'Nachdem du ihm die Fragen beantwortet hast, zeigt er dir auch den Rest der Befestigungsanlagen seiner Stadt.',
 	"quests": [
-		{
+{
 			"text": "Wann wurde das Nordtor errichtet?",
 			"type": "mc",
 			"answers": [
@@ -46,7 +46,7 @@ var questions = [
 			"type": "estimate",
 			"answer":
 				{	"sol": 1500000,
-					"tolerances": [0, 100000, 250000, 1000000]	}
+					"tolerances": [0, 100000, 1000000, 5000000]	}
 		},{
 			"text": "Mit welchem Gott verbindet man den Namen 'Dionysos'?",
 			"type": "mc",
