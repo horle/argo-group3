@@ -108,7 +108,8 @@
 	display: block;
    margin-left: auto;
    margin-right: auto;
-	width: 200px;
+	max-width: 200px;
+	max-height: 300px;
 }
 #breakanoid {
 	display: block;
