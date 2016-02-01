@@ -1,23 +1,83 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta charset="utf-8">
+	<meta name="format-detection" content="telephone=no" >
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi">
+
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-	<script src="dist/sweetalert.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
+	<link rel="stylesheet" type="text/css" href="dist/progressbar.css">
+	<link rel="stylesheet" type="text/css" href="dist/thermo.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<title>ArGO</title>
+
+
+	<title>Life of Julius</title>
 </head>
 <body>
-	<div id="map"></div>
-	<div id="overlay">
-		<h1 id="overlay-h1"></h1>
-		<img id="overlay-img"></img>
-		<p id="overlay-content"></p>
+<!-- MAP PAGE -->
+	<div data-role="page" id="map-page" data-theme="b">
+		<div data-role="header" id="map-page-header">
+			<a href="#level-panel" data-icon="star" data-iconpos="left" id="level-btn" data-role="button">Level</a>
+			<div id="bar-container">
+				<div id="xp-container"></div>
+				<div id="score-container"></div>
+			</div>
+		</div>
+		<div data-role="content">
+			<div id="map"></div>
+		</div>
+		<div data-role="panel" id="level-panel" data-display="push">
+			<div id="thermometer">
+				<div class="track">
+					<div class="goal">
+						<div class="amount" id="thermo-top"></div>
+					</div>
+					<div class="next-goal">
+						<div class="amount" id="thermo-next"></div>
+					</div>
+					<div class="progress">
+						<div class="amount" id="thermo-progress"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div data-role="panel" id="detail-panel" data-display="overlay">
+			<a id="map-btn" href="#map-page" data-icon="back" data-rel="close" class="ui-btn">zur&uuml;ck</a>
+			<h2 id="detail-panel-h2"></h2>
+			<img id="detail-panel-img">
+			<p id="detail-panel-p"></p>
+			<a id="btn-start-quiz" data-role="button" data-inline="true" class="ui-link ui-btn">Aufgaben</a>
+		</div>
 	</div>
-	<script src="geojson.js"></script>
-	<script src="map_init.js"></script>
-	<script src="quests.js"></script>
-	<script src="functions.js"></script>
+<!-- STORY PAGE -->
+	<div data-role="page" id="story-page" data-theme="b">
+		<div data-role="header" id="story-page-header"></div>
+		<div data-role="content" id="story-page-content"></div>
+	</div>
+<!-- GAME PAGE -->
+	<div data-role="page" id="game-page" data-theme="b"></div>
+
+	<script src="dist/circle-progress.js"></script>
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	<script src="dist/thermo.js"></script>
+	<script src="js/geojson.js"></script>
+	<script src="js/quests.js"></script>
+	<script src="js/story.js"></script>
+	<script src="js/breakanoid.js"></script>
+	<script src="js/functions.js"></script>
+	<script src="js/init.js"></script>
+	<script>
+		$(document).on('pageshow', '#map-page', function() {
+			recalculateMapSize();
+		});
+
+		function recalculateMapSize() {
+			$(window).resize();
+			map.invalidateSize(false);
+		}
+	</script>
 </body>
 </html>

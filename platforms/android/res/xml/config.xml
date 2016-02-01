@@ -12,9 +12,9 @@
         <param name="android-package" value="org.apache.cordova.deviceorientation.CompassListener" />
     </feature>
     <allow-intent href="market:*" />
-    <name>Life Of Julius</name>
+    <name>Life of Julius</name>
     <description>
-        Life Of Julius: Ein Geo-Discovery-Spiel für Kölner Archäologen im ersten Semester.
+        Life of Julius: Ein Geo-Discovery-Spiel für Kölner Archäologen im ersten Semester.
     </description>
     <author email="argo@uni-koeln.de" href="http://argo.uni-koeln.de">
         ArGO, Gruppe 3/C

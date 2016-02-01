@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.horle.argo" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>ArGO</name>
+    <name>Life of Julius</name>
     <description>
-        Das ArGO-Projekt von Gruppe 3/C
+        Life of Julius: Ein Geo-Discovery-Spiel für Kölner Archäologen im ersten Semester.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
+    <author email="argo@uni-koeln.de" href="http://argo.uni-koeln.de">
         ArGO, Gruppe 3/C
     </author>
     <content src="index.html" />
