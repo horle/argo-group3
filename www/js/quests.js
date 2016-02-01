@@ -263,7 +263,7 @@ var questions = [
 					"correct": false			}
 			]
 		},{
-			"text": "Das Fundament des Monuments besteht aus einem Gemisch aus Kalk, Sand und Steinchen, das beim Trocknen erh&auml;rtert. Wie hei&szlig;t ein weiteres, f&uuml;r die Konstruktion r&ouml;mischer Go&szlig;bauten essentielles Material?",
+			"text": "Das Fundament des Monuments besteht aus einem Gemisch aus Kalk, Sand und Steinchen, das beim Trocknen erh&auml;rtert. Wie hei&szlig;t ein weiteres, f&uuml;r die Konstruktion r&ouml;mischer Gro&szlig;bauten essentielles Material?",
 			"type": "mc",
 			"answers": [
 				{	"text": "Hypokaust",

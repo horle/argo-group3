@@ -428,11 +428,11 @@ function updateXP(xp) {
 	var localXP = parseInt(xp);
 	if (globalXP + localXP >= story.levels[currentLevel].xp) {
 
-		globalXP = (globalXP + localXP) - story.levels[currentLevel].xp;
+		globalXP = (parseInt(globalXP) + localXP)) - story.levels[currentLevel].xp;
 		newLevel = updateLevel();
 	}
 	else	
-		globalXP += localXP;
+		globalXP = parseInt(globalXP) + localXP;
 
 	setCookie("xp", globalXP);
 
@@ -480,7 +480,7 @@ function showLevelupPopup() {
 	else{
 		wonGame = true;
 		setCookie("won", 1);
-		updateXP(-globalXP);
+		updateXP(-1*globalXP);
 
 		$popUp.popup({dismissible:false});
 		title = "Herzlichen Glückwunsch!";
@@ -514,7 +514,7 @@ function showLevelupPopup() {
 
 function updateScore(score) {
 
-	globalScore += parseInt(score);
+	globalScore = parseInt(globalScore) + parseInt(score);
 
 	if (globalScore < 0)
 		globalScore = 0;
@@ -621,12 +621,6 @@ function setScoreBar(x){
 	$('#score-bar').find('div').animate({ width: progressBarWidth }, 500).html(x);
 }
 
-function setCookie(name, value) {
-
-	document.cookie = name + "=" + value;
-	console.log("set "+name+" to "+value);
-}
-
 //DEBUG
 function printStats() {
 
@@ -635,9 +629,19 @@ function printStats() {
 	console.log('xp: '+globalXP+"/"+story.levels[currentLevel].xp);
 }
 
-// ONLY NUMBERS!
+function setCookie(name, value) {
+
+	window.localStorage.setItem(name, parseInt(value));
+
+//	document.cookie = name + "=" + value;
+	console.log("set "+name+" to "+value);
+}
+
 function readCookie(cname) {
 
+	return parseInt(window.localStorage.getItem(cname));
+
+/*
 	var name = cname + "=";
 	var ca = document.cookie.split(';');
 
@@ -650,5 +654,5 @@ function readCookie(cname) {
 		if (c.indexOf(name) == 0)
 			return parseInt(c.substring(name.length, c.length));
 	}
-	return "";
+	return "";*/
 }

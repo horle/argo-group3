@@ -69,6 +69,10 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 	}
 
 /*********MAP INITIALISING*********/
+
+	$.mobile.hashListeningEnabled = false;
+	$.mobile.changePage.defaults.changeHash = false;	
+
 	wonGame = readCookie("won") == 1 ? true : false;
 	currentLevel = readCookie("level");
 	globalXP = readCookie("xp");
