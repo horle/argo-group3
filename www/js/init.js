@@ -170,8 +170,6 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 	}
 
 	renderIndicators(globalXP, globalScore);
-	if(wonGame == true)
-		addResetButton();
 
 	$('#level-panel').on("panelbeforeopen", function (){
 
@@ -193,6 +191,7 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 			nextRank = story.levels[currentLevel+1].name;
 
 		thermometer(goal, sum, story.levels[currentLevel].name, next, nextRank, true);
+		addResetButton();
 	});
 
 /*******MAP INITIALISED********/
