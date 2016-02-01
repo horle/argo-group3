@@ -1,5 +1,5 @@
 var story = {
-	'introduction':'Du begleitest den jungen angehenden Senator Claudius Julius Agrippa, von Freunden nur Julius genannt, auf seinem Besuch in Köln. Bevor er seine Laufbahn antritt, will er noch die Kolonie kennen lernen, die seine Vorfahrin Agrippina Minor an ihrem Geburtsort gegründet hat. Als Statthalter und Legatus Augusti Pro Praetore der Provinz Germania Inferior zeigst du ihm deine Stadt und hilfst ihm, sich auf seine Ämter vorzubereiten und zeigst ihm, welche Aufgaben ihn erwarten. Er wird dir viele Fragen stellen!',
+	'introduction':'Du bist der junge angehende Senator Claudius Julius Agrippa, von Freunden nur Julius genannt, und auf Besuch in Köln. Bevor du deine Laufbahn antritt, willst du noch die Kolonie kennen lernen, die deine Vorfahrin Agrippina Minor an ihrem Geburtsort gegründet hat. Als Statthalter und Legatus Augusti Pro Praetore der Provinz Germania Inferior zeigst dir Gaius deine Stadt und hilft dir, dich auf deine Ämter vorzubereiten. Er wird dir viele Fragen stellen!',
 	'levels': [
 		{
 			'id':0,
@@ -23,7 +23,7 @@ var story = {
 			'levelup':'Mein lieber Julius. Du kannst sehr stolz auf Dich sein. Von nun an wirst Du das hohe Amt eines Praetors bekleiden und Dich mit den Belangen des Volkes und des römischen Rechts befassen. Als einer der obersten Richter im römischen Reich bist Du nun für die Interpretation der Gesetze und für die Rechtspflege verantwortlich.'
 		},{
 			'id':4,
-			'name':'Legionskommandant',
+			'name':'Legatus',
 			'xp': 120,
 			'levelup':'Julius – die Armee steht dir zu Diensten! Führe uns in die Schlacht, führe uns zu Reichtum und lass den Adler Roms nie in die Hände der Barbaren fallen! Du bist nun der höchste Heerführer dieser Provinz und wir stehen dir zur Seite. Wir folgen deinem Befehl bis in den Tod – für Rom!'
 		},{
@@ -34,7 +34,7 @@ var story = {
 		},{
 			'id':6,
 			'name':'Konsul',
-			'xp': 200,
+			'xp': 0,
 			'levelup':'Oh ehrenwerter Julius! Du hast die Spitze unserer Republik erreicht! Über dir stehen nur die Götter, doch du bist ihnen beinahe ebenbürtig. Glorreicher Julius – wir verneigen uns vor dir!'
 		}
 	]

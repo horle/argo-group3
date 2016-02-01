@@ -1,20 +1,15 @@
 #thermometer {
     width:70px;
     height:300px;
+	 margin: 0 0 0 auto;
     position: relative;
-    background: #ddd;
+    background: #444;
     border:1px solid #aaa;
     -webkit-border-radius: 12px;
        -moz-border-radius: 12px;
         -ms-border-radius: 12px;
          -o-border-radius: 12px;
             border-radius: 12px;
-
-    -webkit-box-shadow: 1px 1px 4px #999, 5px 0 20px #999;
-       -moz-box-shadow: 1px 1px 4px #999, 5px 0 20px #999;
-        -ms-box-shadow: 1px 1px 4px #999, 5px 0 20px #999;
-         -o-box-shadow: 1px 1px 4px #999, 5px 0 20px #999;
-            box-shadow: 1px 1px 4px #999, 5px 0 20px #999;
 }
 
 #thermometer .track {
@@ -38,32 +33,55 @@
 #thermometer .progress {
     height:0%;
     width:100%;
-    background: rgb(20,100,20);
-    background: rgba(20,100,20,0.6);
+    background: rgb(118, 177, 0);
+    background: rgba(118, 177, 0, 0.6);
+    position: absolute;
+    bottom:0;
+    left:0;
+}
+#thermometer .next-goal {
+    height:0%;
+    width:100%;
     position: absolute;
     bottom:0;
     left:0;
 }
 
 #thermometer .goal {
-    position:absolute;
     top:0;
+}
+
+#thermometer .goal .amount {
+    padding:0 60px 0 5px;
+	 width: 130px;
+    border-top:1px solid #F44336;
+ 	 color: #F44336;
+    position: absolute;
+    right:0;
 }
 
 #thermometer .amount {
     display: inline-block;
     padding:0 5px 0 60px;
     border-top:1px solid black;
-    font-family: Trebuchet MS;
     font-weight: bold;
-    color:#333;
+    color:#fff;
 }
 
-#thermometer .progress .amount {
+#thermometer .progress .amount{
     padding:0 60px 0 5px;
     position: absolute;
-    border-top:1px solid #060;
-    color:#060;
+	 width: 130px;
+    border-top:1px solid #76b100;
+    color:#76b100;
+    right:0;
+}
+#thermometer .next-goal .amount{
+    padding:0 60px 0 5px;
+    position: absolute;
+	 width: 130px;
+    border-top:1px solid #e0b300;
+    color:#E0B300;
     right:0;
 }
 

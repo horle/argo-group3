@@ -300,11 +300,11 @@ var questions = [
 			"type": "mc",
 			"answers": [
 				{	"text": "5",
-					"correct": true			},
+					"correct": false			},
 				{	"text": "13",
 					"correct": false			},
 				{	"text": "19",
-					"correct": false			},
+					"correct": true			},
 				{	"text": "32",
 					"correct": false			}
 			]
@@ -318,7 +318,7 @@ var questions = [
 					"correct": false			},
 				{	"text": "Trachyt",
 					"correct": false			},
-				{	"text": "Porphyrit",
+				{	"text": "Basalt",
 					"correct": true			}
 			]
 		}

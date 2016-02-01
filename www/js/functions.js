@@ -45,17 +45,18 @@ function resetPoints(){
 function invokeGamePage(id) {
 
 	//array of questions for certain object
-	var qArray = questions[id].quests;
-	var q = qArray[Math.floor(Math.random() * qArray.length)];
+	var qArray = questions[id];
+	var q = qArray.quests[Math.floor(Math.random() * qArray.quests.length)];
 	var type = q.type;
+	var outro = qArray.outro;
 	
 	if (wonGame == false && (type == "mc" || type == "estimate" || type == "input") ) {
 
-		prepareQuiz(q);
+		prepareQuiz(q, outro);
 	}
 	else {
 		
-		prepareBreakanoid(q);
+		prepareBreakanoid();
 	}
 	$(':mobile-pagecontainer').pagecontainer('change', '#game-page');
 }
@@ -95,7 +96,7 @@ function prepareBreakanoid() {
 	$gHead.toolbar();
 }
 
-function prepareQuiz(q) {
+function prepareQuiz(q, outro) {
 
 	$page = $('#game-page').empty();
 	$gHead = $('<div>').attr({'id':'game-header','data-role':'header'})
@@ -136,8 +137,8 @@ function prepareQuiz(q) {
 				.appendTo($gRadioFieldSet);
 		}
 
-		$('<a>').attr({'data-role':'button','onclick':'checkQuiz()'})
-			.text("Check!").appendTo($gContent);
+		$('<a>',{'data-role':'button'}).text("Check!")
+			.click( function(){checkQuiz(outro)}.bind(outro) ).appendTo($gContent);
 		
 		failCount = q.answers.length - 1;
 		localMaxScore = failCount * 10;	
@@ -180,7 +181,7 @@ function prepareQuiz(q) {
 							if ($diff <= $tolerances[i]) {
 								$notInTol = false;
 								console.log("DEBUG: estimate score: "+($toll -i)*20);
-								popResultEstimate($solution, $res, i, ($toll - i)*20);
+								popResultEstimate(outro, $solution, $res, i, ($toll - i)*20);
 								updateScore( ($toll - i)*20 );
 								updateXP(30);
 								break;
@@ -189,7 +190,7 @@ function prepareQuiz(q) {
 								popResult(1, 0);
 						}
 					}
-			}).appendTo($gContent);
+			}.bind(outro) ).appendTo($gContent);
 
 		localMaxScore = 30;	
 		$gHead.toolbar();
@@ -220,7 +221,7 @@ function prepareQuiz(q) {
 					if (failCount == 0)
 						updateIndicators();
 				}
-			}).appendTo($gContent);
+			}.bind(outro) ).appendTo($gContent);
 		
 		localMaxScore = 40;
 		$gHead.toolbar();
@@ -228,7 +229,7 @@ function prepareQuiz(q) {
 	}
 }
 
-function checkQuiz(){ 
+function checkQuiz(outro){ 
 	//get checked radio button value
 	var res = $('input[name=q-answers]:checked');
 	var localScore = failCount * 10;
@@ -241,7 +242,7 @@ function checkQuiz(){
 		res = res.val();
 	
 	if (res == "true"){
-		popResult(0, localScore);
+		popResult(0, localScore, outro);
 		updateXP(localMaxScore);
 		updateScore(localScore);
 		updateIndicators();
@@ -265,7 +266,7 @@ function sacrificeScore(){
 	updateScore( (-2) * localMaxScore );
 }
 
-function popResultEstimate(sol, res, tol, score) {
+function popResultEstimate(outro, sol, res, tol, score) {
 
 	var title = "Schätzfrage";
 	var text = "Du hast "+res+" geschätzt. Die Lösung ist "+sol
@@ -287,7 +288,7 @@ function popResultEstimate(sol, res, tol, score) {
 		overlayTheme: 'b',
 		transition: "pop",
 	});
-	$pCon = $("<div/>").attr({'data-role':'content'}).appendTo($popUp);
+	$pCon = $("<div/>",{'data-role':'content'}).appendTo($popUp);
 	
 	// input failed
 	if (res == -1) {
@@ -297,6 +298,7 @@ function popResultEstimate(sol, res, tol, score) {
 	}
 	else {
 		$("<p/>", {'text':text}).appendTo($pCon);
+		$("<p/>", {'text':outro}).appendTo($pCon);
 
 		$popUp.on("popupafterclose", function() {
 			$(this).remove();
@@ -317,7 +319,7 @@ function popResultEstimate(sol, res, tol, score) {
 	$popUp.popup("open", {'overlayTheme': "b"}).trigger("create");
 }
 
-function popResult(res, localScore) {
+function popResult(res, localScore, outro) {
 
 	// score points to subtract, if fail
 	var sacrifice = localMaxScore * 2;
@@ -348,6 +350,7 @@ function popResult(res, localScore) {
 						+ localScore + " von " + localMaxScore + " Punkten erzielt!";
 		
 			$("<p/>", {'text':text}).appendTo($pCon);
+			$("<p/>", {'text':outro}).appendTo($pCon);
 			break;
 		// wrong
 		case 1:
@@ -388,6 +391,7 @@ function popResult(res, localScore) {
 	
 				text += " Nochmal probieren! Noch "+failCount+" Versuche übrig."
 				$("<p/>", {'text': text }).appendTo($pCon);
+				$pCon.append( $("<img>",{'src':'img/wrong.gif','id':'gif'}) );
 			}
 
 			break;
@@ -428,7 +432,7 @@ function updateXP(xp) {
 		newLevel = updateLevel();
 	}
 	else	
-		globalXP += parseInt(xp);
+		globalXP += localXP;
 
 	setCookie("xp", globalXP);
 
@@ -476,7 +480,7 @@ function showLevelupPopup() {
 	else{
 		wonGame = true;
 		setCookie("won", 1);
-		$("#btn-start-quiz").hide();
+		updateXP(-globalXP);
 
 		$popUp.popup({dismissible:false});
 		title = "Herzlichen Glückwunsch!";

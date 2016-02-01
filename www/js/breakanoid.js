@@ -8,8 +8,8 @@ function startBreakanoid() {
 	ctx.canvas.width = window.innerWidth-50;
 	ctx.canvas.height = window.innerHeight-50;
 
-	var speedX = 5;// canvas.width/100;
-	var speedY = 5;//canvas.height/100;
+	var speedX = Math.floor(canvas.width/150);
+	var speedY = Math.floor(canvas.height/150);
 
 	var ballRadius = 10;
 	var x = canvas.width/2;
@@ -32,6 +32,7 @@ function startBreakanoid() {
 	var brickRowCount = canvas.width / (brickWidth + brickOffsetLeft)//5;
 	var brickColumnCount = canvas.height / (brickHeight + brickOffsetTop)//3;
 
+	var count = 0;
 	var score = 0;
 	var lives = 3;
 
@@ -39,7 +40,9 @@ function startBreakanoid() {
 	for(c=0; c<brickColumnCount; c++) {
 			  bricks[c] = [];
 			  for(r=0; r<brickRowCount; r++) {
-						 bricks[c][r] = { x: 0, y: 0, status: Math.floor(Math.random()*2) };
+						 var random = Math.floor(Math.random()*2);
+						 bricks[c][r] = { x: 0, y: 0, status: random };
+						 if(random == 1) count++;
 			  }
 	}
 
@@ -82,7 +85,7 @@ function startBreakanoid() {
 														 dy = -dy;
 														 b.status = 0;
 														 score++;
-														 if(score == brickRowCount*brickColumnCount) {
+														 if(score == count) {
 																	alert("Julius Wins!");
 //																	document.location.reload();
 																	dx = 0; dy = 0;

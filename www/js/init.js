@@ -22,16 +22,40 @@ function introduction() {
 		
 	$pCon.append( $('<img>').attr({'src':'img/julius_stand.png','width':'300px','id':'julius'}) );
 	$pCon.append( $('<p>').attr({'id':'intro-text'}).text(story.introduction) );
+	$pCon.append( $('<a>').attr({'data-role':'button',
+											'id':'story-page-skip',
+											'onclick':'storyNext()',
+											'data-icon':'forward'
+		}).text('weiter ...') );
 
 	$pHead.toolbar();
 	$pCon.enhanceWithin();
+}
+
+function storyNext() {
+
+	$pCon = $('#story-page-content');
+	$pCon.empty();
+
+	$intro = 'Die Entwickler von "Life of Julius" wünschen Dir viel Spaß beim Spielen!';
 	
+	$pCon.append( $('<p>').attr({'id':'intro-text'}).text(story.levels[0].levelup) );
+	$pCon.append( $('<p>').attr({'id':'intro-text'}).text($intro) );
+	$pCon.append( $('<a>').attr({'data-role':'button',
+											'id':'story-page-skip',
+											'onclick':'startGame()',
+											'data-icon':'forward'
+		}).text('Los!') );
+
+	$pCon.enhanceWithin();
 }
 
 function startGame() {
 
-	$('#story-page').hide();
+	$('#story-page').remove();
 	$(':mobile-pagecontainer').pagecontainer('change', '#map-page');
+	
+	setCookie("game", 1);
 }
 
 $(document).on('pagebeforecreate', '#map-page', function() {
@@ -45,7 +69,6 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 	}
 
 /*********MAP INITIALISING*********/
-	setCookie("game", 1);
 	wonGame = readCookie("won") == 1 ? true : false;
 	currentLevel = readCookie("level");
 	globalXP = readCookie("xp");
@@ -68,12 +91,10 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 			map.setView(e.latlng, 15, {animate: true});
 
 			if(wonGame == false){
-				$("#btn-start-quiz").show();
 				setStoryContent(feat);
 			}
 			else{
 				setDetailContent(feat);
-				$("#btn-start-quiz").hide();
 			}
 
 			$("#detail-panel").panel('open');
@@ -137,6 +158,28 @@ $(document).on('pagebeforecreate', '#map-page', function() {
 	}
 
 	renderIndicators(globalXP, globalScore);
+
+	$('#level-panel').on("panelbeforeopen", function (){
+
+		var goal = 0, sum = 0, next = 0, nextRank;
+
+		for (var i = 0; i < story.levels.length; i++)
+			goal += story.levels[i].xp;
+		
+		for (var i = 0; i < currentLevel; i++)
+			sum += story.levels[i].xp;
+
+		next = sum + story.levels[currentLevel].xp;
+		sum += globalXP;
+		
+		if(currentLevel == story.levels.length -1)
+			nextRank = null;
+		else
+			nextRank = story.levels[currentLevel+1].name;
+
+		thermometer(goal, sum, story.levels[currentLevel].name, next, nextRank, true);
+	});
+
 /*******MAP INITIALISED********/
 
 });
